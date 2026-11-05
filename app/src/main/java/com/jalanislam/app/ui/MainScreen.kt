@@ -1,7 +1,5 @@
 package com.jalanislam.app.ui
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -57,7 +55,8 @@ enum class AppTab(val titleRes: Int, val icon: ImageVector) {
 fun MainScreen(
     viewModel: MainViewModel,
     onRequestLocationPermission: () -> Unit,
-    onRequestAppPermissions: () -> Unit = {}
+    onRequestAppPermissions: () -> Unit = {},
+    onRequestAudioPicker: ((android.net.Uri) -> Unit) -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedTab by remember { mutableStateOf(AppTab.HOME) }
@@ -78,27 +77,6 @@ fun MainScreen(
                 customAudioList = soundManager.listCustomAdzans()
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
-        }
-    }
-
-    // SAF File Picker registered safely at root composable (before RESUMED state conflicts)
-    val filePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: android.net.Uri? ->
-        if (uri != null) {
-            val fileName = soundManager.getFileNameFromUri(uri)
-            val savedItem = soundManager.saveCustomAudio(uri, fileName)
-            if (savedItem != null) {
-                customAudioList = soundManager.listCustomAdzans()
-                filePickerSuccessMessage = "Audio HP '${savedItem.title}' berhasil ditambahkan!"
-                filePickerErrorMessage = null
-                selectedPrayerForAdzanPlaylist?.let { prayer ->
-                    viewModel.saveAdzanSound(prayer, savedItem.id)
-                }
-            } else {
-                filePickerErrorMessage = "Gagal membaca berkas audio yang dipilih."
-                filePickerSuccessMessage = null
             }
         }
     }
@@ -255,7 +233,21 @@ fun MainScreen(
                     }
                 },
                 onPickCustomAudio = {
-                    filePickerLauncher.launch("audio/*")
+                    onRequestAudioPicker { uri ->
+                        val fileName = soundManager.getFileNameFromUri(uri)
+                        val savedItem = soundManager.saveCustomAudio(uri, fileName)
+                        if (savedItem != null) {
+                            customAudioList = soundManager.listCustomAdzans()
+                            filePickerSuccessMessage = "Audio HP '${savedItem.title}' berhasil ditambahkan!"
+                            filePickerErrorMessage = null
+                            selectedPrayerForAdzanPlaylist?.let { prayer ->
+                                viewModel.saveAdzanSound(prayer, savedItem.id)
+                            }
+                        } else {
+                            filePickerErrorMessage = "Gagal membaca berkas audio yang dipilih."
+                            filePickerSuccessMessage = null
+                        }
+                    }
                 },
                 customList = customAudioList,
                 pickerSuccessMessage = filePickerSuccessMessage,

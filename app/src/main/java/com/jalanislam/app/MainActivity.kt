@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -61,6 +62,20 @@ class MainActivity : ComponentActivity() {
         appPermissionLauncher.launch(permissions.toTypedArray())
     }
 
+    private var onAudioFilePicked: ((Uri) -> Unit)? = null
+    private val audioPickerLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            onAudioFilePicked?.invoke(uri)
+        }
+    }
+
+    fun openAudioPicker(callback: (Uri) -> Unit) {
+        onAudioFilePicked = callback
+        audioPickerLauncher.launch("audio/*")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -109,7 +124,8 @@ class MainActivity : ComponentActivity() {
                 LocalDensity provides scaledDensity,
                 LocalConfiguration provides configuration,
                 LocalContext provides localizedContext,
-                LocalLayoutDirection provides layoutDirection
+                LocalLayoutDirection provides layoutDirection,
+                LocalActivityResultRegistryOwner provides this
             ) {
                 JalanIslamTheme(
                     paletteId = uiState.themePalette,
@@ -126,6 +142,9 @@ class MainActivity : ComponentActivity() {
                             },
                             onRequestAppPermissions = {
                                 requestAppPermissions()
+                            },
+                            onRequestAudioPicker = { callback ->
+                                openAudioPicker(callback)
                             }
                         )
                     }

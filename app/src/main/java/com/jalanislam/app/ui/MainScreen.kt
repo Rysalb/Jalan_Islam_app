@@ -1,5 +1,7 @@
 package com.jalanislam.app.ui
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -22,12 +24,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jalanislam.app.R
+import com.jalanislam.app.data.adzan.AdzanSoundManager
 import com.jalanislam.app.data.cities.IndonesianCities
 import com.jalanislam.app.data.model.PrayerName
 import com.jalanislam.app.data.quran.SurahInfo
@@ -60,6 +64,33 @@ fun MainScreen(
     var showAdjustDialog by remember { mutableStateOf(false) }
     var selectedPrayerForAdzanPlaylist by remember { mutableStateOf<PrayerName?>(null) }
     var selectedSurahForDetail by remember { mutableStateOf<SurahInfo?>(null) }
+
+    val context = LocalContext.current
+    val soundManager = remember { AdzanSoundManager(context) }
+    var customAudioList by remember { mutableStateOf(soundManager.listCustomAdzans()) }
+    var filePickerSuccessMessage by remember { mutableStateOf<String?>(null) }
+    var filePickerErrorMessage by remember { mutableStateOf<String?>(null) }
+
+    // SAF File Picker registered safely at root composable (before RESUMED state conflicts)
+    val filePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: android.net.Uri? ->
+        if (uri != null) {
+            val fileName = soundManager.getFileNameFromUri(uri)
+            val savedItem = soundManager.saveCustomAudio(uri, fileName)
+            if (savedItem != null) {
+                customAudioList = soundManager.listCustomAdzans()
+                filePickerSuccessMessage = "Audio HP '${savedItem.title}' berhasil ditambahkan!"
+                filePickerErrorMessage = null
+                selectedPrayerForAdzanPlaylist?.let { prayer ->
+                    viewModel.saveAdzanSound(prayer, savedItem.id)
+                }
+            } else {
+                filePickerErrorMessage = "Gagal membaca berkas audio yang dipilih."
+                filePickerSuccessMessage = null
+            }
+        }
+    }
 
     val currentCity = remember(uiState.selectedCityId) {
         IndonesianCities.findById(uiState.selectedCityId) ?: IndonesianCities.getDefaultCity()
@@ -199,7 +230,11 @@ fun MainScreen(
             AdzanPlaylistDialog(
                 initialPrayer = prayer,
                 getSoundForPrayer = { p -> viewModel.getSelectedAdzanSound(p) },
-                onDismiss = { selectedPrayerForAdzanPlaylist = null },
+                onDismiss = {
+                    selectedPrayerForAdzanPlaylist = null
+                    filePickerSuccessMessage = null
+                    filePickerErrorMessage = null
+                },
                 onSelectSound = { p, soundItem ->
                     viewModel.saveAdzanSound(p, soundItem.id)
                 },
@@ -207,6 +242,16 @@ fun MainScreen(
                     PrayerName.entries.filter { it.isObligatory }.forEach { p ->
                         viewModel.saveAdzanSound(p, soundItem.id)
                     }
+                },
+                onPickCustomAudio = {
+                    filePickerLauncher.launch("audio/*")
+                },
+                customList = customAudioList,
+                pickerSuccessMessage = filePickerSuccessMessage,
+                pickerErrorMessage = filePickerErrorMessage,
+                onDeleteCustomAudio = { item ->
+                    soundManager.deleteCustomAudio(item)
+                    customAudioList = soundManager.listCustomAdzans()
                 }
             )
         }

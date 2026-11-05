@@ -172,6 +172,24 @@ class AdzanSoundManager(private val context: Context) {
         return dir
     }
 
+    fun getFileNameFromUri(uri: Uri): String {
+        var name = "Audio Kustom HP"
+        try {
+            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                val nameIndex = cursor.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                if (nameIndex != -1 && cursor.moveToFirst()) {
+                    val resolved = cursor.getString(nameIndex)
+                    if (!resolved.isNullOrBlank()) {
+                        name = resolved
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return name
+    }
+
     fun saveCustomAudio(uri: Uri, displayName: String): AdzanSoundItem? {
         return try {
             val dir = getCustomDir()
@@ -263,6 +281,12 @@ class AdzanSoundManager(private val context: Context) {
 
     fun deleteDownloadedAdzan(item: AdzanSoundItem): Boolean {
         val file = File(getDownloadDir(), "${item.id}.mp3")
+        return if (file.exists()) file.delete() else false
+    }
+
+    fun deleteCustomAudio(item: AdzanSoundItem): Boolean {
+        val path = item.customFilePath ?: return false
+        val file = File(path)
         return if (file.exists()) file.delete() else false
     }
 

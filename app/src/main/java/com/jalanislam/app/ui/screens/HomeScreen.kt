@@ -569,7 +569,13 @@ fun HomeScreen(
                         item = item,
                         notificationMode = notificationModes[item.name] ?: NotificationMode.FULL_ADZAN,
                         onSoundToggle = { onSoundToggle(item.name) },
-                        onAdjustClick = { onOpenAdzanPlaylist(item.name) }
+                        onAdjustClick = {
+                            if (item.name.isObligatory) {
+                                onOpenAdzanPlaylist(item.name)
+                            } else {
+                                onOpenAdjustDialog()
+                            }
+                        }
                     )
                 }
             }

@@ -1,8 +1,6 @@
 package com.jalanislam.app.ui.components
 
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,12 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.jalanislam.app.R
 import com.jalanislam.app.data.adzan.AdzanSoundItem
 import com.jalanislam.app.data.adzan.AdzanSoundManager
@@ -43,11 +43,21 @@ fun AdzanPlaylistDialog(
     getSoundForPrayer: (PrayerName) -> String,
     onDismiss: () -> Unit,
     onSelectSound: (PrayerName, AdzanSoundItem) -> Unit,
-    onApplyToAll: (AdzanSoundItem) -> Unit = {}
+    onApplyToAll: (AdzanSoundItem) -> Unit = {},
+    onPickCustomAudio: () -> Unit = {},
+    customList: List<AdzanSoundItem> = emptyList(),
+    pickerSuccessMessage: String? = null,
+    pickerErrorMessage: String? = null,
+    onDeleteCustomAudio: ((AdzanSoundItem) -> Unit)? = null
 ) {
     val context = LocalContext.current
     val soundManager = remember { AdzanSoundManager(context) }
     val scope = rememberCoroutineScope()
+    val configuration = LocalConfiguration.current
+
+    // Strictly bounded height prevents Compose infinite height constraint exception
+    val screenHeight = configuration.screenHeightDp.dp
+    val dialogHeight = (screenHeight * 0.88f).coerceIn(420.dp, 750.dp)
 
     // Active prayer being customized (Subuh, Dzuhur, Ashar, Maghrib, Isya)
     val obligatoryPrayers = remember { PrayerName.entries.filter { it.isObligatory } }
@@ -59,7 +69,6 @@ fun AdzanPlaylistDialog(
         soundManager.getPlaylistForPrayer(selectedPrayer)
     }
 
-    var customList by remember { mutableStateOf(soundManager.listCustomAdzans()) }
     var currentlyPlayingId by remember { mutableStateOf<String?>(null) }
     var downloadingId by remember { mutableStateOf<String?>(null) }
     var downloadProgress by remember { mutableIntStateOf(0) }
@@ -67,19 +76,17 @@ fun AdzanPlaylistDialog(
     var successMessage by remember { mutableStateOf<String?>(null) }
     var refreshTrigger by remember { mutableIntStateOf(0) }
 
-    // Audio file picker launcher (SAF)
-    val filePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri: Uri? ->
-        if (uri != null) {
-            val savedItem = soundManager.saveCustomAudio(uri, "Adzan Kustom HP")
-            if (savedItem != null) {
-                customList = soundManager.listCustomAdzans()
-                successMessage = "Audio HP '${savedItem.title}' berhasil ditambahkan!"
-                onSelectSound(selectedPrayer, savedItem)
-            } else {
-                errorMessage = "Gagal membaca berkas audio yang dipilih."
-            }
+    // Synchronize messages from external audio picker
+    LaunchedEffect(pickerSuccessMessage) {
+        if (!pickerSuccessMessage.isNullOrBlank()) {
+            successMessage = pickerSuccessMessage
+            errorMessage = null
+        }
+    }
+    LaunchedEffect(pickerErrorMessage) {
+        if (!pickerErrorMessage.isNullOrBlank()) {
+            errorMessage = pickerErrorMessage
+            successMessage = null
         }
     }
 
@@ -89,19 +96,29 @@ fun AdzanPlaylistDialog(
         }
     }
 
-    Dialog(onDismissRequest = onDismiss) {
-        Card(
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.92f),
-            shape = RoundedCornerShape(22.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 20.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Column(
+            Card(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .height(dialogHeight),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
             ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
                 // Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -249,7 +266,7 @@ fun AdzanPlaylistDialog(
 
                 // CTA to Pick from Device Storage
                 OutlinedButton(
-                    onClick = { filePickerLauncher.launch("audio/*") },
+                    onClick = onPickCustomAudio,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp)
                 ) {
@@ -261,7 +278,9 @@ fun AdzanPlaylistDialog(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 LazyColumn(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     // Custom user adzans section
@@ -311,7 +330,9 @@ fun AdzanPlaylistDialog(
                                     successMessage = "Suara ${item.title} diterapkan untuk seluruh waktu sholat!"
                                 },
                                 onDownload = {},
-                                onDelete = {}
+                                onDelete = {
+                                    onDeleteCustomAudio?.invoke(item)
+                                }
                             )
                         }
                     }
@@ -418,6 +439,7 @@ fun AdzanPlaylistDialog(
             }
         }
     }
+}
 }
 
 @Composable
@@ -559,14 +581,14 @@ private fun AdzanSoundRow(
                         Text("Unduh (${item.fileSizeFormatted})", fontSize = 11.sp)
                     }
                     Spacer(modifier = Modifier.width(6.dp))
-                } else if (status == AdzanSoundStatus.DOWNLOADED && !isSelected) {
+                } else if ((status == AdzanSoundStatus.DOWNLOADED || status == AdzanSoundStatus.CUSTOM_LOCAL) && !isSelected) {
                     IconButton(
                         onClick = onDelete,
                         modifier = Modifier.size(32.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.DeleteOutline,
-                            contentDescription = "Hapus audio unduhan",
+                            contentDescription = "Hapus file audio",
                             tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
                             modifier = Modifier.size(18.dp)
                         )

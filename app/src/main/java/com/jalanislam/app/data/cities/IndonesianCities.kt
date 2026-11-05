@@ -50,6 +50,14 @@ object IndonesianCities {
 
     fun findById(id: String): CityLocation? = CITIES.find { it.id == id }
 
+    fun findNearest(latitude: Double, longitude: Double): CityLocation {
+        return CITIES.minByOrNull { city ->
+            val latDiff = city.latitude - latitude
+            val lngDiff = city.longitude - longitude
+            (latDiff * latDiff) + (lngDiff * lngDiff)
+        } ?: getDefaultCity()
+    }
+
     fun search(query: String): List<CityLocation> {
         val q = query.trim().lowercase()
         if (q.isEmpty()) return CITIES

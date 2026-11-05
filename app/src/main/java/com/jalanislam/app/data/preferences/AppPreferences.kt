@@ -139,6 +139,38 @@ class AppPreferences(context: Context) {
         prefs.edit().putString("adzan_sound_${prayer.name}", soundId).apply()
     }
 
+    fun hasCompletedOnboarding(): Boolean {
+        return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
+    }
+
+    fun setCompletedOnboarding(completed: Boolean) {
+        prefs.edit().putBoolean(KEY_ONBOARDING_COMPLETED, completed).apply()
+    }
+
+    fun hasCompletedFeatureTour(): Boolean {
+        return prefs.getBoolean(KEY_FEATURE_TOUR_COMPLETED, false)
+    }
+
+    fun setCompletedFeatureTour(completed: Boolean) {
+        prefs.edit().putBoolean(KEY_FEATURE_TOUR_COMPLETED, completed).apply()
+    }
+
+    fun saveGpsLocation(lat: Double, lng: Double, cityName: String) {
+        prefs.edit()
+            .putFloat(KEY_GPS_LAT, lat.toFloat())
+            .putFloat(KEY_GPS_LNG, lng.toFloat())
+            .putString(KEY_GPS_CITY, cityName)
+            .apply()
+    }
+
+    fun getGpsLocation(): Triple<Double, Double, String>? {
+        if (!prefs.contains(KEY_GPS_LAT) || !prefs.contains(KEY_GPS_LNG)) return null
+        val lat = prefs.getFloat(KEY_GPS_LAT, 0f).toDouble()
+        val lng = prefs.getFloat(KEY_GPS_LNG, 0f).toDouble()
+        val city = prefs.getString(KEY_GPS_CITY, "") ?: ""
+        return Triple(lat, lng, city)
+    }
+
     companion object {
         private const val PREFS_NAME = "jalan_islam_prefs"
         private const val KEY_USE_GPS = "pref_use_gps"
@@ -147,6 +179,11 @@ class AppPreferences(context: Context) {
         private const val KEY_FONT_SCALE = "pref_font_scale"
         private const val KEY_THEME_PALETTE = "pref_theme_palette"
         private const val KEY_THEME_MODE = "pref_theme_mode"
+        private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+        private const val KEY_FEATURE_TOUR_COMPLETED = "feature_tour_completed"
+        private const val KEY_GPS_LAT = "gps_latitude"
+        private const val KEY_GPS_LNG = "gps_longitude"
+        private const val KEY_GPS_CITY = "gps_city_name"
 
         private const val KEY_OFFSET_IMSAK = "offset_imsak"
         private const val KEY_OFFSET_FAJR = "offset_fajr"

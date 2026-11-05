@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -59,6 +60,7 @@ fun SettingsScreen(
     onSelectThemeMode: (String) -> Unit = {},
     onOpenAdjustDialog: () -> Unit,
     onOpenAdzanPlaylist: () -> Unit = {},
+    onRestartFeatureTour: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -446,6 +448,17 @@ fun SettingsScreen(
                         context.startActivity(intent)
                     }
                 }
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Section: Panduan & Edukasi Fitur Aplikasi
+            SettingsSectionHeader(title = "Panduan & Tutorial Fitur")
+            SettingsCardItem(
+                icon = Icons.AutoMirrored.Filled.Help,
+                title = "Mulai Ulang Panduan Interaktif",
+                subtitle = "Lihat penjelasan fungsi tombol dan navigasi setiap halaman",
+                onClick = onRestartFeatureTour
             )
 
             Spacer(modifier = Modifier.height(16.dp))

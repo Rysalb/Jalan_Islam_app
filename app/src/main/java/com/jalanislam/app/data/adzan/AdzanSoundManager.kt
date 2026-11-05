@@ -309,22 +309,7 @@ class AdzanSoundManager(private val context: Context) {
                         .build()
                 )
                 if (uri != null) {
-                    if (uri.scheme == "android.resource") {
-                        val rawId = uri.lastPathSegment?.toIntOrNull()
-                        if (rawId != null && rawId != 0) {
-                            val afd = context.resources.openRawResourceFd(rawId)
-                            if (afd != null) {
-                                setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                                afd.close()
-                            } else {
-                                setDataSource(context, uri)
-                            }
-                        } else {
-                            setDataSource(context, uri)
-                        }
-                    } else {
-                        setDataSource(context, uri)
-                    }
+                    setDataSource(context, uri)
                 } else if (onlineUrl != null) {
                     setDataSource(onlineUrl)
                 }

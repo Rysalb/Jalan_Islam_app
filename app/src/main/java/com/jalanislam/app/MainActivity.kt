@@ -38,28 +38,36 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
-    private val locationPermissionLauncher = registerForActivityResult(
+    private val appPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         val fineLocationGranted = permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false
         val coarseLocationGranted = permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false
-        val isGranted = fineLocationGranted || coarseLocationGranted
-        viewModel.setLocationPermissionGranted(isGranted)
-        if (isGranted) {
+        val isLocationGranted = fineLocationGranted || coarseLocationGranted
+        viewModel.setLocationPermissionGranted(isLocationGranted)
+        if (isLocationGranted && viewModel.uiState.value.useGps) {
             viewModel.scanCurrentLocation()
         }
     }
 
-    private val notificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { _ ->
-        // Notification permission handled
+    fun requestAppPermissions() {
+        val permissions = mutableListOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+        appPermissionLauncher.launch(permissions.toTypedArray())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        checkPermissions()
+        // Only auto-trigger permissions if user has already completed onboarding
+        if (!viewModel.uiState.value.showOnboarding) {
+            checkPermissions()
+        }
 
         // Ensure next upcoming alarm is active
         PrayerAlarmScheduler.scheduleNextAlarm(this)
@@ -107,6 +115,9 @@ class MainActivity : ComponentActivity() {
                             viewModel = viewModel,
                             onRequestLocationPermission = {
                                 openAppSettings()
+                            },
+                            onRequestAppPermissions = {
+                                requestAppPermissions()
                             }
                         )
                     }
@@ -129,25 +140,8 @@ class MainActivity : ComponentActivity() {
 
         if (hasLocation && viewModel.uiState.value.useGps) {
             viewModel.scanCurrentLocation()
-        }
-
-        if (!hasLocation) {
-            locationPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val notifPermission = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-
-            if (!notifPermission) {
-                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-            }
+        } else if (!hasLocation) {
+            requestAppPermissions()
         }
     }
 

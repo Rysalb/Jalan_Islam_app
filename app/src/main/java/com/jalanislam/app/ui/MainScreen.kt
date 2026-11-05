@@ -52,7 +52,8 @@ enum class AppTab(val titleRes: Int, val icon: ImageVector) {
 @Composable
 fun MainScreen(
     viewModel: MainViewModel,
-    onRequestLocationPermission: () -> Unit
+    onRequestLocationPermission: () -> Unit,
+    onRequestAppPermissions: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedTab by remember { mutableStateOf(AppTab.HOME) }
@@ -172,6 +173,7 @@ fun MainScreen(
                     onSelectThemeMode = { viewModel.setThemeMode(it) },
                     onOpenAdjustDialog = { showAdjustDialog = true },
                     onOpenAdzanPlaylist = { selectedPrayerForAdzanPlaylist = PrayerName.FAJR },
+                    onRestartFeatureTour = { viewModel.startFeatureTour() },
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -195,13 +197,34 @@ fun MainScreen(
         // Adzan Audio Playlist & Custom Device File Picker Dialog
         selectedPrayerForAdzanPlaylist?.let { prayer ->
             AdzanPlaylistDialog(
-                targetPrayer = prayer,
-                currentSoundId = viewModel.getSelectedAdzanSound(prayer),
+                initialPrayer = prayer,
+                getSoundForPrayer = { p -> viewModel.getSelectedAdzanSound(p) },
                 onDismiss = { selectedPrayerForAdzanPlaylist = null },
-                onSelectSound = { soundItem ->
-                    viewModel.saveAdzanSound(prayer, soundItem.id)
-                    selectedPrayerForAdzanPlaylist = null
+                onSelectSound = { p, soundItem ->
+                    viewModel.saveAdzanSound(p, soundItem.id)
+                },
+                onApplyToAll = { soundItem ->
+                    PrayerName.entries.filter { it.isObligatory }.forEach { p ->
+                        viewModel.saveAdzanSound(p, soundItem.id)
+                    }
                 }
+            )
+        }
+
+        // First-Time Onboarding & Audio Setup Dialog (Prevents User Being Shocked)
+        if (uiState.showOnboarding) {
+            com.jalanislam.app.ui.components.OnboardingDialog(
+                onComplete = { defaultMode, startTour ->
+                    viewModel.completeOnboarding(defaultMode, startTour)
+                },
+                onRequestPermissions = onRequestAppPermissions
+            )
+        }
+
+        // In-App Interactive Feature Tour (Walkthrough of each screen & button)
+        if (uiState.showFeatureTour) {
+            com.jalanislam.app.ui.components.InteractiveFeatureTourDialog(
+                onDismiss = { viewModel.finishFeatureTour() }
             )
         }
     }

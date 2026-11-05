@@ -7,11 +7,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -36,17 +39,24 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AdzanPlaylistDialog(
-    targetPrayer: PrayerName,
-    currentSoundId: String,
+    initialPrayer: PrayerName = PrayerName.FAJR,
+    getSoundForPrayer: (PrayerName) -> String,
     onDismiss: () -> Unit,
-    onSelectSound: (AdzanSoundItem) -> Unit
+    onSelectSound: (PrayerName, AdzanSoundItem) -> Unit,
+    onApplyToAll: (AdzanSoundItem) -> Unit = {}
 ) {
     val context = LocalContext.current
     val soundManager = remember { AdzanSoundManager(context) }
     val scope = rememberCoroutineScope()
 
-    val playlistItems = remember(targetPrayer) {
-        soundManager.getPlaylistForPrayer(targetPrayer)
+    // Active prayer being customized (Subuh, Dzuhur, Ashar, Maghrib, Isya)
+    val obligatoryPrayers = remember { PrayerName.entries.filter { it.isObligatory } }
+    var selectedPrayer by remember { mutableStateOf(if (initialPrayer.isObligatory) initialPrayer else PrayerName.FAJR) }
+
+    val currentSoundId = getSoundForPrayer(selectedPrayer)
+
+    val playlistItems = remember(selectedPrayer) {
+        soundManager.getPlaylistForPrayer(selectedPrayer)
     }
 
     var customList by remember { mutableStateOf(soundManager.listCustomAdzans()) }
@@ -55,8 +65,6 @@ fun AdzanPlaylistDialog(
     var downloadProgress by remember { mutableIntStateOf(0) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var successMessage by remember { mutableStateOf<String?>(null) }
-
-    // Trigger state change to refresh statuses
     var refreshTrigger by remember { mutableIntStateOf(0) }
 
     // Audio file picker launcher (SAF)
@@ -67,8 +75,8 @@ fun AdzanPlaylistDialog(
             val savedItem = soundManager.saveCustomAudio(uri, "Adzan Kustom HP")
             if (savedItem != null) {
                 customList = soundManager.listCustomAdzans()
-                successMessage = "File audio berhasil ditambahkan dari perangkat Anda!"
-                onSelectSound(savedItem)
+                successMessage = "Audio HP '${savedItem.title}' berhasil ditambahkan!"
+                onSelectSound(selectedPrayer, savedItem)
             } else {
                 errorMessage = "Gagal membaca berkas audio yang dipilih."
             }
@@ -85,7 +93,7 @@ fun AdzanPlaylistDialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.90f),
+                .fillMaxHeight(0.92f),
             shape = RoundedCornerShape(22.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
@@ -95,12 +103,15 @@ fun AdzanPlaylistDialog(
                     .padding(16.dp)
             ) {
                 // Header
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Box(
                         modifier = Modifier
                             .size(42.dp)
                             .clip(RoundedCornerShape(12.dp))
-                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -111,23 +122,110 @@ fun AdzanPlaylistDialog(
                         )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
-                    Column {
-                        val isSubuh = targetPrayer == PrayerName.FAJR
+                    Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = if (isSubuh) "Pilihan Suara Adzan Subuh" else "Pilihan Suara Adzan",
+                            text = "Pilihan Suara Adzan",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = if (isSubuh) "Khusus Subuh • Dilengkapi lafadz Ash-shalātu khairum minan na‘ūm" else "Untuk Waktu: ${stringResource(id = targetPrayer.titleRes)}",
+                            text = "Kustomisasi suara unik per waktu sholat",
                             style = MaterialTheme.typography.labelSmall,
                             color = IslamicGold,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
+                    IconButton(onClick = onDismiss) {
+                        Icon(Icons.Filled.Close, contentDescription = "Tutup")
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Prayer Selector Chips (Subuh, Dzuhur, Ashar, Maghrib, Isya)
+                Text(
+                    text = "Pilih Waktu Sholat yang Ingin Diatur:",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    obligatoryPrayers.forEach { prayer ->
+                        val isSelected = prayer == selectedPrayer
+                        val prayerLabel = stringResource(id = prayer.titleRes)
+
+                        FilterChip(
+                            selected = isSelected,
+                            onClick = {
+                                selectedPrayer = prayer
+                                errorMessage = null
+                                successMessage = null
+                            },
+                            label = {
+                                Text(
+                                    text = prayerLabel,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            },
+                            leadingIcon = if (isSelected) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Check,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                }
+                            } else null,
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primary,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                                selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimary
+                            )
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
+
+                // Active sound banner for selected prayer
+                val isSubuh = selectedPrayer == PrayerName.FAJR
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(10.dp),
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = if (isSubuh) {
+                                "Mengatur Adzan Subuh (dengan lafadz Ash-shalātu khairum minan na'ūm)"
+                            } else {
+                                "Mengatur Adzan ${stringResource(id = selectedPrayer.titleRes)}"
+                            },
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 // Feedback states (Rule 3 & 10 Agent.MD)
                 if (errorMessage != null) {
@@ -144,7 +242,7 @@ fun AdzanPlaylistDialog(
                         text = successMessage.orEmpty(),
                         color = StateSuccess,
                         style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(bottom = 6.dp)
                     )
                 }
@@ -157,7 +255,7 @@ fun AdzanPlaylistDialog(
                 ) {
                     Icon(Icons.Filled.FileOpen, contentDescription = null, modifier = Modifier.size(18.dp))
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Pilih File Suara dari HP Anda")
+                    Text("Pilih File Suara MP3 dari HP Anda")
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -185,6 +283,7 @@ fun AdzanPlaylistDialog(
                                 isPlaying = currentlyPlayingId == item.id,
                                 isDownloading = downloadingId == item.id,
                                 downloadProgress = downloadProgress,
+                                targetPrayerName = stringResource(id = selectedPrayer.titleRes),
                                 onPlayToggle = {
                                     if (currentlyPlayingId == item.id) {
                                         soundManager.stopPreview()
@@ -202,9 +301,14 @@ fun AdzanPlaylistDialog(
                                     }
                                 },
                                 onSelect = {
-                                    onSelectSound(item)
+                                    onSelectSound(selectedPrayer, item)
                                     soundManager.stopPreview()
-                                    onDismiss()
+                                    successMessage = "Suara ${item.title} dipilih untuk ${context.getString(selectedPrayer.titleRes)}!"
+                                },
+                                onApplyAll = {
+                                    onApplyToAll(item)
+                                    soundManager.stopPreview()
+                                    successMessage = "Suara ${item.title} diterapkan untuk seluruh waktu sholat!"
                                 },
                                 onDownload = {},
                                 onDelete = {}
@@ -214,9 +318,8 @@ fun AdzanPlaylistDialog(
 
                     // Curated Playlist section (dedicated Subuh vs Daily)
                     item {
-                        val isSubuh = targetPrayer == PrayerName.FAJR
                         Text(
-                            text = if (isSubuh) "Variasi Lantunan Adzan Subuh:" else "Playlist Adzan Sholat Harian:",
+                            text = if (isSubuh) "Variasi Lantunan Khusus Adzan Subuh:" else "Playlist Adzan Sholat Harian:",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary,
@@ -234,6 +337,7 @@ fun AdzanPlaylistDialog(
                             isPlaying = currentlyPlayingId == item.id,
                             isDownloading = downloadingId == item.id,
                             downloadProgress = downloadProgress,
+                            targetPrayerName = stringResource(id = selectedPrayer.titleRes),
                             onPlayToggle = {
                                 if (currentlyPlayingId == item.id) {
                                     soundManager.stopPreview()
@@ -260,18 +364,22 @@ fun AdzanPlaylistDialog(
                                         downloadingId = null
                                         if (res.isSuccess) {
                                             refreshTrigger++
-                                            successMessage = "${item.title} berhasil diunduh!"
-                                            onSelectSound(item)
-                                            onDismiss()
+                                            successMessage = "${item.title} berhasil diunduh dan dipilih untuk ${context.getString(selectedPrayer.titleRes)}!"
+                                            onSelectSound(selectedPrayer, item)
                                         } else {
                                             errorMessage = "Gagal mengunduh: ${res.exceptionOrNull()?.localizedMessage}"
                                         }
                                     }
                                 } else {
-                                    onSelectSound(item)
+                                    onSelectSound(selectedPrayer, item)
                                     soundManager.stopPreview()
-                                    onDismiss()
+                                    successMessage = "Suara ${item.title} dipilih untuk ${context.getString(selectedPrayer.titleRes)}!"
                                 }
+                            },
+                            onApplyAll = {
+                                onApplyToAll(item)
+                                soundManager.stopPreview()
+                                successMessage = "Suara ${item.title} diterapkan untuk seluruh waktu sholat!"
                             },
                             onDownload = {
                                 downloadingId = item.id
@@ -297,14 +405,15 @@ fun AdzanPlaylistDialog(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TextButton(
+                Button(
                     onClick = {
                         soundManager.stopPreview()
                         onDismiss()
                     },
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("Tutup")
+                    Text("Selesai")
                 }
             }
         }
@@ -319,8 +428,10 @@ private fun AdzanSoundRow(
     isPlaying: Boolean,
     isDownloading: Boolean,
     downloadProgress: Int,
+    targetPrayerName: String,
     onPlayToggle: () -> Unit,
     onSelect: () -> Unit,
+    onApplyAll: () -> Unit,
     onDownload: () -> Unit,
     onDelete: () -> Unit
 ) {
@@ -348,108 +459,146 @@ private fun AdzanSoundRow(
                     enabled = status != AdzanSoundStatus.ONLINE_ONLY,
                     modifier = Modifier
                         .size(36.dp)
-                        .clip(RoundedCornerShape(18.dp))
+                        .clip(RoundedCornerShape(8.dp))
                         .background(
-                            if (isPlaying) MaterialTheme.colorScheme.primary
-                            else if (status != AdzanSoundStatus.ONLINE_ONLY) MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
-                            else Color.Gray.copy(alpha = 0.1f)
+                            if (status != AdzanSoundStatus.ONLINE_ONLY)
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                            else
+                                MaterialTheme.colorScheme.surfaceVariant
                         )
                 ) {
                     Icon(
-                        imageVector = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
-                        contentDescription = "Dengarkan",
-                        tint = if (isPlaying) Color.White else if (status != AdzanSoundStatus.ONLINE_ONLY) MaterialTheme.colorScheme.primary else Color.Gray,
+                        imageVector = if (isPlaying) Icons.Filled.Stop else Icons.Filled.PlayArrow,
+                        contentDescription = if (isPlaying) "Stop" else "Putar Preview",
+                        tint = if (status != AdzanSoundStatus.ONLINE_ONLY)
+                            MaterialTheme.colorScheme.primary
+                        else
+                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                         modifier = Modifier.size(20.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clickable { onSelect() }
-                ) {
+                // Title & Details
+                Column(modifier = Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(
                             text = item.title,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface
                         )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        StatusBadge(status = status)
                     }
 
                     Text(
                         text = item.origin,
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = IslamicGold,
                         fontWeight = FontWeight.Medium
                     )
 
-                    Spacer(modifier = Modifier.height(2.dp))
-
-                    // Status Badge (Offline / Downloaded / Online)
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        when (status) {
-                            AdzanSoundStatus.BUNDLED -> {
-                                StatusBadge("Tersedia Bawaan (Offline)", StateSuccess)
-                            }
-                            AdzanSoundStatus.DOWNLOADED -> {
-                                StatusBadge("Sudah Diunduh (Offline)", StateSuccess)
-                            }
-                            AdzanSoundStatus.CUSTOM_LOCAL -> {
-                                StatusBadge("File HP Anda", IslamicGold)
-                            }
-                            AdzanSoundStatus.ONLINE_ONLY -> {
-                                StatusBadge("Perlu Diunduh (${item.fileSizeFormatted})", MaterialTheme.colorScheme.primary)
-                            }
-                        }
-                    }
+                    Text(
+                        text = item.description,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f),
+                        lineHeight = 14.sp
+                    )
                 }
 
-                // Action Button: Download button or Checkmark
-                if (status == AdzanSoundStatus.ONLINE_ONLY) {
-                    if (isDownloading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(28.dp),
-                            strokeWidth = 2.5.dp,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    } else {
-                        IconButton(onClick = onDownload) {
-                            Icon(
-                                imageVector = Icons.Filled.Download,
-                                contentDescription = "Unduh",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-                } else {
-                    IconButton(onClick = onSelect) {
-                        Icon(
-                            imageVector = if (isSelected) Icons.Filled.CheckCircle else Icons.Filled.RadioButtonUnchecked,
-                            contentDescription = "Pilih",
-                            tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray.copy(alpha = 0.5f)
-                        )
-                    }
+                Spacer(modifier = Modifier.width(8.dp))
+
+                // Selection check indicator
+                if (isSelected) {
+                    Icon(
+                        imageVector = Icons.Filled.CheckCircle,
+                        contentDescription = "Terpilih",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             }
 
-            // Download Progress Bar (Rule 2 & 5 Agent.MD)
-            AnimatedVisibility(visible = isDownloading) {
-                Column(modifier = Modifier.padding(top = 8.dp)) {
-                    LinearProgressIndicator(
-                        progress = { downloadProgress / 100f },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(6.dp)
-                            .clip(RoundedCornerShape(3.dp)),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
+            // Download Progress Bar
+            if (isDownloading) {
+                Spacer(modifier = Modifier.height(8.dp))
+                LinearProgressIndicator(
+                    progress = { downloadProgress / 100f },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                        .clip(RoundedCornerShape(2.dp)),
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = "Mengunduh file audio... $downloadProgress%",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+            }
+
+            // Actions row: Pilih untuk waktu sholat ini & Terapkan ke semua
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (status == AdzanSoundStatus.ONLINE_ONLY) {
+                    OutlinedButton(
+                        onClick = onDownload,
+                        enabled = !isDownloading,
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp),
+                        modifier = Modifier.height(32.dp)
+                    ) {
+                        Icon(Icons.Filled.CloudDownload, contentDescription = null, modifier = Modifier.size(14.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text("Unduh (${item.fileSizeFormatted})", fontSize = 11.sp)
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                } else if (status == AdzanSoundStatus.DOWNLOADED && !isSelected) {
+                    IconButton(
+                        onClick = onDelete,
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.DeleteOutline,
+                            contentDescription = "Hapus audio unduhan",
+                            tint = MaterialTheme.colorScheme.error.copy(alpha = 0.7f),
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+
+                if (!isSelected) {
+                    FilledTonalButton(
+                        onClick = onSelect,
+                        enabled = !isDownloading,
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                        modifier = Modifier.height(32.dp)
+                    ) {
+                        Text("Pilih untuk $targetPrayerName", fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+                    TextButton(
+                        onClick = onApplyAll,
+                        enabled = !isDownloading && status != AdzanSoundStatus.ONLINE_ONLY,
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                        modifier = Modifier.height(32.dp)
+                    ) {
+                        Text("Semua Waktu", fontSize = 11.sp)
+                    }
+                } else {
                     Text(
-                        text = "Mengunduh file audio... $downloadProgress%",
+                        text = "Aktif untuk $targetPrayerName",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(end = 4.dp)
                     )
                 }
             }
@@ -458,19 +607,25 @@ private fun AdzanSoundRow(
 }
 
 @Composable
-private fun StatusBadge(label: String, color: Color) {
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(4.dp))
-            .background(color.copy(alpha = 0.12f))
-            .padding(horizontal = 6.dp, vertical = 2.dp)
+private fun StatusBadge(status: AdzanSoundStatus) {
+    val (label, containerColor, contentColor) = when (status) {
+        AdzanSoundStatus.BUNDLED -> Triple("Offline", MaterialTheme.colorScheme.primary.copy(alpha = 0.12f), MaterialTheme.colorScheme.primary)
+        AdzanSoundStatus.DOWNLOADED -> Triple("Tersimpan", StateSuccess.copy(alpha = 0.12f), StateSuccess)
+        AdzanSoundStatus.CUSTOM_LOCAL -> Triple("File HP", IslamicGold.copy(alpha = 0.15f), IslamicGold)
+        AdzanSoundStatus.ONLINE_ONLY -> Triple("Online", MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+
+    Surface(
+        shape = RoundedCornerShape(4.dp),
+        color = containerColor
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = color,
+            color = contentColor,
+            fontSize = 9.sp,
             fontWeight = FontWeight.Bold,
-            fontSize = 9.5.sp
+            modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp)
         )
     }
 }

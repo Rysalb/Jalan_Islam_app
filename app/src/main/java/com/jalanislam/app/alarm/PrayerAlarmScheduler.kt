@@ -20,16 +20,32 @@ object PrayerAlarmScheduler {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
         val prefs = AppPreferences(context)
 
-        val cityId = prefs.selectedCityIdFlow.value
-        val city = IndonesianCities.findById(cityId) ?: IndonesianCities.getDefaultCity()
-        val adjustments = prefs.loadAdjustments()
+        // Cancel previous alarms to prevent dual/orphan alarms across different locations
+        cancelAllAlarms(context)
 
+        // Determine active location: GPS if enabled and cached, otherwise manual city
+        val (lat, lng, locName) = if (prefs.useGpsFlow.value) {
+            val gps = prefs.getGpsLocation()
+            if (gps != null) {
+                Triple(gps.first, gps.second, gps.third.ifBlank { "Lokasi GPS" })
+            } else {
+                val cityId = prefs.selectedCityIdFlow.value
+                val city = IndonesianCities.findById(cityId) ?: IndonesianCities.getDefaultCity()
+                Triple(city.latitude, city.longitude, city.name)
+            }
+        } else {
+            val cityId = prefs.selectedCityIdFlow.value
+            val city = IndonesianCities.findById(cityId) ?: IndonesianCities.getDefaultCity()
+            Triple(city.latitude, city.longitude, city.name)
+        }
+
+        val adjustments = prefs.loadAdjustments()
         val now = System.currentTimeMillis()
         val calendar = Calendar.getInstance()
 
         // Calculate today and tomorrow to find next upcoming prayer
         val todaySchedule = AstronomicalPrayerCalculator.calculateDaily(
-            calendar, city.latitude, city.longitude, city.name, adjustments
+            calendar, lat, lng, locName, adjustments
         )
 
         var nextItem = todaySchedule.toList().find { it.timeMillis > now && it.name != PrayerName.SUNRISE }
@@ -38,7 +54,7 @@ object PrayerAlarmScheduler {
             // Check tomorrow
             val tomorrowCal = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, 1) }
             val tomorrowSchedule = AstronomicalPrayerCalculator.calculateDaily(
-                tomorrowCal, city.latitude, city.longitude, city.name, adjustments
+                tomorrowCal, lat, lng, locName, adjustments
             )
             nextItem = tomorrowSchedule.toList().find { it.name != PrayerName.SUNRISE }
         }
@@ -47,7 +63,7 @@ object PrayerAlarmScheduler {
 
         val intent = Intent(context, PrayerAlarmReceiver::class.java).apply {
             putExtra(EXTRA_PRAYER_NAME, nextItem.name.name)
-            putExtra(EXTRA_LOCATION_NAME, city.name)
+            putExtra(EXTRA_LOCATION_NAME, locName)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -59,11 +75,29 @@ object PrayerAlarmScheduler {
 
         val triggerTime = nextItem.timeMillis
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
-            alarmManager.setAlarmClock(clockInfo, pendingIntent)
-        } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                if (alarmManager.canScheduleExactAlarms()) {
+                    val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                    alarmManager.setAlarmClock(clockInfo, pendingIntent)
+                } else {
+                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                alarmManager.setAlarmClock(clockInfo, pendingIntent)
+            } else {
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            }
+        } catch (e: SecurityException) {
+            android.util.Log.w("PrayerAlarmScheduler", "Exact alarm denied, fallback to setAndAllowWhileIdle", e)
+            try {
+                alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            } catch (e2: Exception) {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("PrayerAlarmScheduler", "Error scheduling alarm", e)
         }
     }
 
@@ -100,11 +134,26 @@ object PrayerAlarmScheduler {
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
-                alarmManager.setAlarmClock(clockInfo, pendingIntent)
-            } else {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+            try {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                        alarmManager.setAlarmClock(clockInfo, pendingIntent)
+                    } else {
+                        alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                    alarmManager.setAlarmClock(clockInfo, pendingIntent)
+                } else {
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                }
+            } catch (e: Exception) {
+                try {
+                    alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                } catch (e2: Exception) {
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
+                }
             }
         }
     }

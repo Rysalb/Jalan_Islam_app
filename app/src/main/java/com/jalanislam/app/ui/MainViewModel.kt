@@ -45,7 +45,9 @@ data class MainUiState(
     val fontScale: Float = 1.0f,
     val themePalette: String = "emerald",
     val themeMode: String = "system",
-    val notificationModes: Map<PrayerName, NotificationMode> = emptyMap()
+    val notificationModes: Map<PrayerName, NotificationMode> = emptyMap(),
+    val showOnboarding: Boolean = false,
+    val showFeatureTour: Boolean = false
 )
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -91,6 +93,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         PrayerAlarmScheduler.scheduleNextAlarm(getApplication())
     }
 
+    fun completeOnboarding(defaultMode: NotificationMode, startTour: Boolean) {
+        prefs.setAllNotificationModes(defaultMode)
+        prefs.setCompletedOnboarding(true)
+        val notifMap = PrayerName.entries.associateWith { defaultMode }
+        _uiState.value = _uiState.value.copy(
+            showOnboarding = false,
+            notificationModes = notifMap,
+            showFeatureTour = startTour
+        )
+        PrayerAlarmScheduler.scheduleNextAlarm(getApplication())
+    }
+
+    fun startFeatureTour() {
+        _uiState.value = _uiState.value.copy(showFeatureTour = true)
+    }
+
+    fun finishFeatureTour() {
+        prefs.setCompletedFeatureTour(true)
+        _uiState.value = _uiState.value.copy(showFeatureTour = false)
+    }
+
     private fun loadInitialData() {
         val adjustments = prefs.loadAdjustments()
         val cityId = prefs.selectedCityIdFlow.value
@@ -99,6 +122,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val fontScale = prefs.fontScaleFlow.value
         val palette = prefs.themePaletteFlow.value
         val mode = prefs.themeModeFlow.value
+        val isFirstLaunch = !prefs.hasCompletedOnboarding()
 
         val notifModes = PrayerName.entries.associateWith { prefs.getNotificationMode(it) }
 
@@ -110,7 +134,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             fontScale = fontScale,
             themePalette = palette,
             themeMode = mode,
-            notificationModes = notifModes
+            notificationModes = notifModes,
+            showOnboarding = isFirstLaunch
         )
 
         recalculateSchedules()
@@ -192,10 +217,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         locationManager.scanCurrentLocation(
             onSuccess = { loc ->
                 prefs.setUseGps(true)
+                prefs.saveGpsLocation(loc.latitude, loc.longitude, loc.cityName)
+                val nearest = com.jalanislam.app.data.cities.IndonesianCities.findNearest(loc.latitude, loc.longitude)
+                prefs.setSelectedCityId(nearest.id)
+
                 _uiState.value = _uiState.value.copy(
                     isGpsScanning = false,
                     useGps = true,
                     detectedLocation = loc,
+                    selectedCityId = nearest.id,
                     gpsStatusMessage = null
                 )
                 recalculateSchedules()

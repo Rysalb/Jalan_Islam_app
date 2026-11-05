@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">Prayer Times, Qibla Direction &amp; Adzan Notification</string>
+
+    <string name="nav_home">Home</string>
+    <string name="nav_quran">Quran</string>
+    <string name="nav_monthly">30 Days</string>
+    <string name="nav_qibla">Qibla</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="prayer_imsak">Imsak</string>
+    <string name="prayer_fajr">Fajr</string>
+    <string name="prayer_sunrise">Sunrise</string>
+    <string name="prayer_dhuhr">Dhuhr</string>
+    <string name="prayer_asr">Asr</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isha</string>
+
+    <string name="next_prayer">Next Prayer</string>
+    <string name="time_remaining">Time Left</string>
+    <string name="imsak_fasting_reminder">Imsak Time: Prepare for Ramadan or Sunnah Fasting</string>
+    <string name="today_schedule">Today\'s Prayer Schedule</string>
+
+    <string name="qibla_direction">Qibla Direction</string>
+    <string name="distance_to_kabah">Distance to Ka\'bah</string>
+    <string name="qibla_bearing">Qibla Angle</string>
+    <string name="heading_now">Heading</string>
+    <string name="accuracy_high">Sensor Accuracy: High</string>
+    <string name="accuracy_medium">Sensor Accuracy: Medium</string>
+    <string name="accuracy_low">Sensor Accuracy: Low (Calibration Needed)</string>
+    <string name="calibrate_compass_hint">Wave your phone in a figure-8 pattern to calibrate the compass</string>
+
+    <string name="manual_adjustment_title">Manual Minute Adjustment</string>
+    <string name="manual_adjustment_desc">Adjust prayer minutes to match your local mosque (+/- 10 minutes)</string>
+    <string name="minute_unit">min</string>
+    <string name="reset_default">Reset to Default</string>
+    <string name="save_changes">Save Changes</string>
+
+    <string name="adzan_alarm">Adzan Alarm</string>
+    <string name="adzan_full">Full Adzan</string>
+    <string name="adzan_beep">Short Beep</string>
+    <string name="adzan_mute">Silent / Vibrate</string>
+    <string name="stop_adzan">Stop Adzan</string>
+    <string name="it_is_prayer_time">Time for %s</string>
+    <string name="prayer_time_body">It is time for %1$s prayer in %2$s and surrounding areas</string>
+
+    <string name="current_location">Current Location</string>
+    <string name="use_gps">Automatic GPS</string>
+    <string name="select_city">Choose City Manually</string>
+    <string name="search_city_hint">Search city or regency name...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">No Location Selected</string>
+    <string name="empty_state_desc">Please enable GPS or select a city to accurately calculate prayer times and Qibla direction.</string>
+    <string name="empty_state_cta">Select City Now</string>
+
+    <string name="loading_state_title">Calculating Prayer Times...</string>
+    <string name="loading_state_desc">Computing astronomical coordinates and Qibla angle for your area.</string>
+
+    <string name="error_state_title">Failed to Obtain Location</string>
+    <string name="error_state_desc">Could not determine device coordinates. Ensure GPS is active or pick a city manually.</string>
+    <string name="error_state_retry">Try Again</string>
+
+    <string name="offline_state_banner">Offline Mode Active — Astronomical calculations are performed locally on your device without internet.</string>
+    <string name="slow_network_banner">Slow connection detected. Utilizing local calculations to ensure prompt prayer times.</string>
+
+    <string name="zero_search_title">No Cities Found</string>
+    <string name="zero_search_desc">No cities match your search keyword. Try another name or reset the search filter.</string>
+    <string name="zero_search_reset">Reset Search</string>
+    <string name="zero_search_manual">Use GPS Location</string>
+
+    <string name="permission_denied_title">Permissions Required</string>
+    <string name="permission_denied_desc">Jalan Islam needs Location and Notification permissions to play the Adzan on time and show accurate Qibla.</string>
+    <string name="permission_denied_cta">Open App Settings</string>
+
+    <string name="draft_preserved_notice">Your settings and minute adjustments are automatically saved.</string>
+    <string name="validation_offset_error">Minute adjustment must be between -10 and +10 minutes</string>
+    <string name="success_saved_title">Saved Successfully!</string>
+    <string name="success_saved_desc">Your prayer settings and adzan preferences have been updated.</string>
+
+    <string name="language_selection">Language Selection</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>

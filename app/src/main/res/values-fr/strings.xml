@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">Heures de Prière, Direction de la Qibla &amp; Alarme de l\'Adhan</string>
+
+    <string name="nav_home">Accueil</string>
+    <string name="nav_quran">Coran</string>
+    <string name="nav_monthly">30 Jours</string>
+    <string name="nav_qibla">Qibla</string>
+    <string name="nav_settings">Réglages</string>
+
+    <string name="prayer_imsak">Imsak</string>
+    <string name="prayer_fajr">Fajr</string>
+    <string name="prayer_sunrise">Lever du soleil</string>
+    <string name="prayer_dhuhr">Dhuhr</string>
+    <string name="prayer_asr">Asr</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isha</string>
+
+    <string name="next_prayer">Prochaine Prière</string>
+    <string name="time_remaining">Temps Restant</string>
+    <string name="imsak_fasting_reminder">Heure d\'Imsak : Préparation au jeûne</string>
+    <string name="today_schedule">Horaires des Prières d\'Aujourd\'hui</string>
+
+    <string name="qibla_direction">Direction de la Qibla</string>
+    <string name="distance_to_kabah">Distance jusqu\'à la Ka\'bah</string>
+    <string name="qibla_bearing">Angle de la Qibla</string>
+    <string name="heading_now">Cap Actuel</string>
+    <string name="accuracy_high">Précision du capteur : Haute</string>
+    <string name="accuracy_medium">Précision du capteur : Moyenne</string>
+    <string name="accuracy_low">Précision du capteur : Faible (Étalonnage requis)</string>
+    <string name="calibrate_compass_hint">Déplacez votre téléphone en forme de 8 pour calibrer la boussole</string>
+
+    <string name="manual_adjustment_title">Ajustement Manuel des Minutes</string>
+    <string name="manual_adjustment_desc">Ajustez les minutes pour correspondre à votre mosquée locale (+/- 10 min)</string>
+    <string name="minute_unit">min</string>
+    <string name="reset_default">Réinitialiser</string>
+    <string name="save_changes">Enregistrer les modifications</string>
+
+    <string name="adzan_alarm">Alarme Adhan</string>
+    <string name="adzan_full">Adhan Complet</string>
+    <string name="adzan_beep">Bip Court</string>
+    <string name="adzan_mute">Silencieux / Vibreur</string>
+    <string name="stop_adzan">Arrêter l\'Adhan</string>
+    <string name="it_is_prayer_time">L\'heure de %s est arrivée</string>
+    <string name="prayer_time_body">C\'est l\'heure de la prière de %1$s pour la région de %2$s</string>
+
+    <string name="current_location">Localisation Actuelle</string>
+    <string name="use_gps">Utiliser le GPS Automatique</string>
+    <string name="select_city">Choisir une Ville Manuellement</string>
+    <string name="search_city_hint">Rechercher une ville...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">Aucun Emplacement Sélectionné</string>
+    <string name="empty_state_desc">Veuillez activer le GPS ou choisir une ville pour calculer les heures de prière et la Qibla.</string>
+    <string name="empty_state_cta">Sélectionner une Ville</string>
+
+    <string name="loading_state_title">Calcul des Heures de Prière...</string>
+    <string name="loading_state_desc">Calcul des coordonnées astronomiques et de l\'angle de la Qibla.</string>
+
+    <string name="error_state_title">Échec de la Localisation</string>
+    <string name="error_state_desc">Impossible de déterminer les coordonnées. Vérifiez votre GPS ou choisissez une ville manuellement.</string>
+    <string name="error_state_retry">Réessayer</string>
+
+    <string name="offline_state_banner">Mode Hors Ligne Actif — Les calculs astronomiques s\'effectuent localement sans connexion Internet.</string>
+    <string name="slow_network_banner">Connexion lente. Calculs locaux utilisés pour garantir l\'exactitude des horaires.</string>
+
+    <string name="zero_search_title">Aucune Ville Trouvée</string>
+    <string name="zero_search_desc">Aucune ville ne correspond à votre recherche. Essayez un autre mot-clé ou réinitialisez le filtre.</string>
+    <string name="zero_search_reset">Réinitialiser la recherche</string>
+    <string name="zero_search_manual">Utiliser la position GPS</string>
+
+    <string name="permission_denied_title">Autorisations Requises</string>
+    <string name="permission_denied_desc">Jalan Islam a besoin des autorisations de localisation et de notification pour déclencher l\'appel à la prière à l\'heure exacte.</string>
+    <string name="permission_denied_cta">Ouvrir les Paramètres</string>
+
+    <string name="draft_preserved_notice">Vos réglages et ajustements de minutes sont enregistrés automatiquement.</string>
+    <string name="validation_offset_error">L\'ajustement doit être compris entre -10 et +10 minutes</string>
+    <string name="success_saved_title">Enregistré avec Succès !</string>
+    <string name="success_saved_desc">Vos préférences de prière et d\'alarme ont été mises à jour.</string>
+
+    <string name="language_selection">Choix de la Langue</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>

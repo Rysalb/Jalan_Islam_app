@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#0A5C36</color>
+    <color name="primary_variant">#063B22</color>
+    <color name="secondary">#D4AF37</color>
+    <color name="secondary_variant">#AA8A24</color>
+    <color name="background_light">#F8FAF8</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="background_dark">#0D1612</color>
+    <color name="surface_dark">#182620</color>
+    <color name="text_primary_light">#1E2922</color>
+    <color name="text_secondary_light">#5C6B61</color>
+    <color name="error">#D32F2F</color>
+    <color name="success">#2E7D32</color>
+    <color name="warning">#ED6C02</color>
+</resources>
+

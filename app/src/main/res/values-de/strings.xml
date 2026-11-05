@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">Gebetszeiten, Qibla-Richtung &amp; Adhan-Benachrichtigung</string>
+
+    <string name="nav_home">Start</string>
+    <string name="nav_quran">Koran</string>
+    <string name="nav_monthly">30 Tage</string>
+    <string name="nav_qibla">Qibla</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <string name="prayer_imsak">Imsak</string>
+    <string name="prayer_fajr">Fadschr</string>
+    <string name="prayer_sunrise">Sonnenaufgang</string>
+    <string name="prayer_dhuhr">Dhuhr</string>
+    <string name="prayer_asr">Asr</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Ischa</string>
+
+    <string name="next_prayer">Nächstes Gebet</string>
+    <string name="time_remaining">Verbleibende Zeit</string>
+    <string name="imsak_fasting_reminder">Imsak-Zeit: Vorbereitung auf das Fasten</string>
+    <string name="today_schedule">Heutige Gebetszeiten</string>
+
+    <string name="qibla_direction">Qibla-Richtung</string>
+    <string name="distance_to_kabah">Entfernung zur Kaaba</string>
+    <string name="qibla_bearing">Qibla-Winkel</string>
+    <string name="heading_now">Aktueller Kurs</string>
+    <string name="accuracy_high">Sensor-Genauigkeit: Hoch</string>
+    <string name="accuracy_medium">Sensor-Genauigkeit: Mittel</string>
+    <string name="accuracy_low">Sensor-Genauigkeit: Niedrig (Kalibrierung nötig)</string>
+    <string name="calibrate_compass_hint">Bewegen Sie Ihr Smartphone in einer 8er-Form, um den Kompass zu kalibrieren</string>
+
+    <string name="manual_adjustment_title">Manuelle Minuteneinstellung</string>
+    <string name="manual_adjustment_desc">Minuten anpassen, um mit Ihrer Moschee übereinzustimmen (+/- 10 Min)</string>
+    <string name="minute_unit">Min</string>
+    <string name="reset_default">Auf Standard zurücksetzen</string>
+    <string name="save_changes">Änderungen speichern</string>
+
+    <string name="adzan_alarm">Adhan-Alarm</string>
+    <string name="adzan_full">Vollständiger Adhan</string>
+    <string name="adzan_beep">Kurzer Signalton</string>
+    <string name="adzan_mute">Stumm / Vibration</string>
+    <string name="stop_adzan">Adhan stoppen</string>
+    <string name="it_is_prayer_time">Zeit für %s</string>
+    <string name="prayer_time_body">Es ist Zeit für das %1$s-Gebet in %2$s und Umgebung</string>
+
+    <string name="current_location">Aktueller Standort</string>
+    <string name="use_gps">Automatisches GPS verwenden</string>
+    <string name="select_city">Stadt manuell wählen</string>
+    <string name="search_city_hint">Stadt suchen...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">Kein Standort Ausgewählt</string>
+    <string name="empty_state_desc">Bitte aktivieren Sie GPS oder wählen Sie eine Stadt, um Gebetszeiten und Qibla-Richtung zu berechnen.</string>
+    <string name="empty_state_cta">Jetzt Stadt Auswählen</string>
+
+    <string name="loading_state_title">Gebetszeiten werden berechnet...</string>
+    <string name="loading_state_desc">Astronomische Koordinaten und Qibla-Winkel werden ermittelt.</string>
+
+    <string name="error_state_title">Standort konnte nicht ermittelt werden</string>
+    <string name="error_state_desc">Standortdaten nicht lesbar. Bitte GPS prüfen oder eine Stadt manuell wählen.</string>
+    <string name="error_state_retry">Erneut versuchen</string>
+
+    <string name="offline_state_banner">Offline-Modus aktiv — Berechnungen finden lokal ohne Internetverbindung statt.</string>
+    <string name="slow_network_banner">Langsame Verbindung erkannt. Lokale Berechnung sichert pünktliche Gebetszeiten.</string>
+
+    <string name="zero_search_title">Keine Städte Gefunden</string>
+    <string name="zero_search_desc">Keine Treffer für diesen Begriff. Probieren Sie einen anderen Namen oder setzen Sie den Filter zurück.</string>
+    <string name="zero_search_reset">Suche zurücksetzen</string>
+    <string name="zero_search_manual">GPS-Standort nutzen</string>
+
+    <string name="permission_denied_title">Berechtigungen Erforderlich</string>
+    <string name="permission_denied_desc">Jalan Islam benötigt Standort- und Benachrichtigungsrechte für pünktlichen Adhan-Ruf.</string>
+    <string name="permission_denied_cta">App-Einstellungen öffnen</string>
+
+    <string name="draft_preserved_notice">Ihre Einstellungen und Minuteneinstellungen werden sicher auf dem Gerät gespeichert.</string>
+    <string name="validation_offset_error">Minuteneinstellung muss zwischen -10 und +10 Minuten liegen</string>
+    <string name="success_saved_title">Erfolgreich Gespeichert!</string>
+    <string name="success_saved_desc">Ihre Gebetseinstellungen und Adhan-Optionen wurden aktualisiert.</string>
+
+    <string name="language_selection">Sprachauswahl</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>

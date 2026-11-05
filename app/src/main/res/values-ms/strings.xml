@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">Waktu Solat, Arah Kiblat, dan Pemberitahuan Azan</string>
+
+    <string name="nav_home">Utama</string>
+    <string name="nav_quran">Al-Quran</string>
+    <string name="nav_monthly">30 Hari</string>
+    <string name="nav_qibla">Kiblat</string>
+    <string name="nav_settings">Tetapan</string>
+
+    <string name="prayer_imsak">Imsak</string>
+    <string name="prayer_fajr">Subuh</string>
+    <string name="prayer_sunrise">Syuruk</string>
+    <string name="prayer_dhuhr">Zohor</string>
+    <string name="prayer_asr">Asar</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isyak</string>
+
+    <string name="next_prayer">Menuju Waktu</string>
+    <string name="time_remaining">Baki Masa</string>
+    <string name="imsak_fasting_reminder">Waktu Imsak: Persediaan Puasa Ramadhan / Sunat</string>
+    <string name="today_schedule">Waktu Solat Hari Ini</string>
+
+    <string name="qibla_direction">Arah Kiblat</string>
+    <string name="distance_to_kabah">Jarak ke Ka\'bah</string>
+    <string name="qibla_bearing">Sudut Kiblat</string>
+    <string name="heading_now">Arah Pandang</string>
+    <string name="accuracy_high">Ketepatan Sensor: Tinggi</string>
+    <string name="accuracy_medium">Ketepatan Sensor: Sederhana</string>
+    <string name="accuracy_low">Ketepatan Sensor: Rendah (Perlu Kalibrasi)</string>
+    <string name="calibrate_compass_hint">Pusingkan peranti dalam corak angka 8 untuk menentukur kompas</string>
+
+    <string name="manual_adjustment_title">Pelarasan Minit Manual</string>
+    <string name="manual_adjustment_desc">Selaraskan minit waktu solat sekiranya terdapat perbezaan dengan masjid setempat (+/- 10 minit)</string>
+    <string name="minute_unit">minit</string>
+    <string name="reset_default">Tetapkan Semula</string>
+    <string name="save_changes">Simpan Perubahan</string>
+
+    <string name="adzan_alarm">Penggera Azan</string>
+    <string name="adzan_full">Azan Penuh</string>
+    <string name="adzan_beep">Bunyi Ringkas</string>
+    <string name="adzan_mute">Senyap / Getar</string>
+    <string name="stop_adzan">Hentikan Azan</string>
+    <string name="it_is_prayer_time">Telah Masuk Waktu %s</string>
+    <string name="prayer_time_body">Mari laksanakan solat %1$s bagi kawasan %2$s dan sekitarnya</string>
+
+    <string name="current_location">Lokasi Semasa</string>
+    <string name="use_gps">Gunakan GPS Automatik</string>
+    <string name="select_city">Pilih Bandar Manual</string>
+    <string name="search_city_hint">Cari nama bandar atau daerah...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">Tiada Lokasi Dipilih</string>
+    <string name="empty_state_desc">Sila aktifkan GPS atau pilih bandar untuk mengira waktu solat dan arah kiblat dengan tepat.</string>
+    <string name="empty_state_cta">Pilih Bandar Sekarang</string>
+
+    <string name="loading_state_title">Mengira Waktu Solat...</string>
+    <string name="loading_state_desc">Mengira waktu astronomi dan sudut kiblat berdasarkan koordinat anda.</string>
+
+    <string name="error_state_title">Gagal Mendapatkan Lokasi</string>
+    <string name="error_state_desc">Tidak dapat membaca koordinat peranti. Sila pastikan isyarat GPS aktif atau pilih bandar secara manual.</string>
+    <string name="error_state_retry">Cuba Lagi</string>
+
+    <string name="offline_state_banner">Mod Luar Talian Aktif — Pengiraan astronomi berjalan secara setempat tanpa memerlukan data internet.</string>
+    <string name="slow_network_banner">Isyarat rangkaian lemah. Menggunakan pengiraan luar talian agar waktu solat kekal tepat.</string>
+
+    <string name="zero_search_title">Bandar Tidak Ditemui</string>
+    <string name="zero_search_desc">Tiada bandar yang sepadan. Sila cuba kata kunci lain atau set semula carian.</string>
+    <string name="zero_search_reset">Set Semula Carian</string>
+    <string name="zero_search_manual">Gunakan Lokasi GPS</string>
+
+    <string name="permission_denied_title">Kebenaran Akses Diperlukan</string>
+    <string name="permission_denied_desc">Jalan Islam memerlukan kebenaran Lokasi dan Pemberitahuan agar azan berkumandang tepat pada masanya.</string>
+    <string name="permission_denied_cta">Buka Tetapan Aplikasi</string>
+
+    <string name="draft_preserved_notice">Tetapan dan pelarasan minit anda disimpan secara selamat pada peranti.</string>
+    <string name="validation_offset_error">Pelarasan minit mesti antara -10 hingga +10 minit</string>
+    <string name="success_saved_title">Berjaya Disimpan!</string>
+    <string name="success_saved_desc">Tetapan waktu solat dan penggera azan telah dikemas kini.</string>
+
+    <string name="language_selection">Pilihan Bahasa</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>

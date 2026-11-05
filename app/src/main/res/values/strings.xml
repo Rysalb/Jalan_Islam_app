@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">Jadwal Sholat, Arah Kiblat, dan Alarm Adzan</string>
+
+    <!-- Navigasi -->
+    <string name="nav_home">Beranda</string>
+    <string name="nav_quran">Al-Qur\'an</string>
+    <string name="nav_monthly">30 Hari</string>
+    <string name="nav_qibla">Kiblat</string>
+    <string name="nav_settings">Setelan</string>
+
+    <!-- Waktu Sholat -->
+    <string name="prayer_imsak">Imsak</string>
+    <string name="prayer_fajr">Subuh</string>
+    <string name="prayer_sunrise">Terbit</string>
+    <string name="prayer_dhuhr">Dzuhur</string>
+    <string name="prayer_asr">Ashar</string>
+    <string name="prayer_maghrib">Maghrib</string>
+    <string name="prayer_isha">Isya</string>
+
+    <string name="next_prayer">Menuju Waktu</string>
+    <string name="time_remaining">Sisa Waktu</string>
+    <string name="imsak_fasting_reminder">Waktu Imsak: Persiapan Puasa Ramadhan / Sunnah</string>
+    <string name="today_schedule">Jadwal Sholat Hari Ini</string>
+
+    <!-- Kiblat & Ka'bah -->
+    <string name="qibla_direction">Arah Kiblat</string>
+    <string name="distance_to_kabah">Jarak ke Ka\'bah</string>
+    <string name="qibla_bearing">Sudut Kiblat</string>
+    <string name="heading_now">Arah Hadap</string>
+    <string name="accuracy_high">Akurasi Sensor: Tinggi</string>
+    <string name="accuracy_medium">Akurasi Sensor: Sedang</string>
+    <string name="accuracy_low">Akurasi Sensor: Rendah (Perlu Kalibrasi)</string>
+    <string name="calibrate_compass_hint">Putar ponsel membentuk pola angka 8 untuk mengkalibrasi kompas</string>
+
+    <!-- Koreksi Manual -->
+    <string name="manual_adjustment_title">Koreksi Menit Manual</string>
+    <string name="manual_adjustment_desc">Sesuaikan menit waktu sholat jika ada perbedaan dengan masjid setempat (+/- 10 menit)</string>
+    <string name="minute_unit">menit</string>
+    <string name="reset_default">Reset ke Standar</string>
+    <string name="save_changes">Simpan Perubahan</string>
+
+    <!-- Notifikasi & Alarm -->
+    <string name="adzan_alarm">Alarm Adzan</string>
+    <string name="adzan_full">Adzan Penuh</string>
+    <string name="adzan_beep">Bunyi Singkat</string>
+    <string name="adzan_mute">Hening / Getar</string>
+    <string name="stop_adzan">Hentikan Adzan</string>
+    <string name="it_is_prayer_time">Telah Masuk Waktu %s</string>
+    <string name="prayer_time_body">Mari laksanakan sholat %1$s untuk wilayah %2$s dan sekitarnya</string>
+
+    <!-- Lokasi & Kota -->
+    <string name="current_location">Lokasi Saat Ini</string>
+    <string name="use_gps">Gunakan GPS Otomatis</string>
+    <string name="select_city">Pilih Kota Manual</string>
+    <string name="search_city_hint">Cari nama kota atau kabupaten...</string>
+
+    <!-- 10 Core UI States (Agent.MD Rules) -->
+    <!-- 1. Empty State -->
+    <string name="empty_state_title">Belum Ada Lokasi Dipilih</string>
+    <string name="empty_state_desc">Silakan aktifkan GPS atau pilih salah satu kota di Indonesia untuk menghitung jadwal sholat dan arah kiblat secara presisi.</string>
+    <string name="empty_state_cta">Pilih Kota Sekarang</string>
+
+    <!-- 2. Loading State -->
+    <string name="loading_state_title">Menghitung Jadwal Sholat...</string>
+    <string name="loading_state_desc">Mengkalkulasi waktu astronomis dan sudut kiblat berdasarkan koordinat wilayah Anda.</string>
+
+    <!-- 3. Error State -->
+    <string name="error_state_title">Gagal Mendapatkan Lokasi</string>
+    <string name="error_state_desc">Tidak dapat membaca koordinat perangkat. Pastikan sinyal GPS aktif atau gunakan pilihan kota manual.</string>
+    <string name="error_state_retry">Coba Lagi</string>
+
+    <!-- 4. Offline State -->
+    <string name="offline_state_banner">Mode Offline Aktif — Perhitungan astronomis berjalan lokal di perangkat tanpa butuh kuota internet.</string>
+
+    <!-- 5. Slow Network State -->
+    <string name="slow_network_banner">Sinyal jaringan lemah. Menggunakan kalkulasi lokal agar jadwal sholat tetap akurat.</string>
+
+    <!-- 6. Zero Search Results State -->
+    <string name="zero_search_title">Kota Tidak Ditemukan</string>
+    <string name="zero_search_desc">Tidak ada kota yang cocok dengan kata kunci tersebut. Coba gunakan nama kabupaten terdekat atau reset pencarian.</string>
+    <string name="zero_search_reset">Reset Pencarian</string>
+    <string name="zero_search_manual">Gunakan Lokasi GPS</string>
+
+    <!-- 7. Permission Denied State -->
+    <string name="permission_denied_title">Izin Akses Diperlukan</string>
+    <string name="permission_denied_desc">Jalan Islam memerlukan izin Lokasi untuk mendeteksi koordinat jadwal sholat, serta izin Notifikasi dan Alarm Tepat Waktu agar suara adzan berkumandang tanpa terlambat.</string>
+    <string name="permission_denied_cta">Buka Pengaturan Aplikasi</string>
+
+    <!-- 8. Session Expiry & Draft Preservation -->
+    <string name="draft_preserved_notice">Pengaturan dan koreksi menit Anda otomatis tersimpan aman di perangkat.</string>
+
+    <!-- 9. Form Validation State -->
+    <string name="validation_offset_error">Koreksi menit harus di antara -10 hingga +10 menit</string>
+
+    <!-- 10. Success State -->
+    <string name="success_saved_title">Berhasil Disimpan!</string>
+    <string name="success_saved_desc">Pengaturan jadwal sholat dan alarm adzan telah diperbarui.</string>
+
+    <!-- Bahasa -->
+    <string name="language_selection">Pilihan Bahasa</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>

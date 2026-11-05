@@ -4,8 +4,10 @@ import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -93,6 +96,8 @@ fun InteractiveFeatureTourDialog(
 
     var currentIndex by remember { mutableIntStateOf(0) }
     val currentStep = steps[currentIndex]
+    val configuration = LocalConfiguration.current
+    val maxDialogHeight = (configuration.screenHeightDp.dp * 0.88f).coerceIn(400.dp, 680.dp)
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -101,14 +106,15 @@ fun InteractiveFeatureTourDialog(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .heightIn(max = maxDialogHeight)
+                .padding(vertical = 12.dp),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(22.dp)
+                    .padding(20.dp)
             ) {
                 // Header Row
                 Row(
@@ -136,11 +142,16 @@ fun InteractiveFeatureTourDialog(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                // Animated Card Content
-                AnimatedContent(
-                    targetState = currentStep,
-                    label = "TourStepContent"
-                ) { step ->
+                // Scrollable Animated Card Content
+                Box(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    AnimatedContent(
+                        targetState = currentStep,
+                        label = "TourStepContent"
+                    ) { step ->
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
@@ -209,6 +220,7 @@ fun InteractiveFeatureTourDialog(
                             }
                         }
                     }
+                }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

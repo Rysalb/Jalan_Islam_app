@@ -67,9 +67,20 @@ fun MainScreen(
 
     val context = LocalContext.current
     val soundManager = remember { AdzanSoundManager(context) }
-    var customAudioList by remember { mutableStateOf(soundManager.listCustomAdzans()) }
+    var customAudioList by remember { mutableStateOf<List<com.jalanislam.app.data.adzan.AdzanSoundItem>>(emptyList()) }
     var filePickerSuccessMessage by remember { mutableStateOf<String?>(null) }
     var filePickerErrorMessage by remember { mutableStateOf<String?>(null) }
+
+    // Lazy load custom audio list only when dialog opens (zero startup disk I/O overhead)
+    LaunchedEffect(selectedPrayerForAdzanPlaylist) {
+        if (selectedPrayerForAdzanPlaylist != null) {
+            try {
+                customAudioList = soundManager.listCustomAdzans()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 
     // SAF File Picker registered safely at root composable (before RESUMED state conflicts)
     val filePickerLauncher = rememberLauncherForActivityResult(

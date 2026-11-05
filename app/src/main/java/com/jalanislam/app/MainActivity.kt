@@ -64,13 +64,21 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Only auto-trigger permissions if user has already completed onboarding
-        if (!viewModel.uiState.value.showOnboarding) {
-            checkPermissions()
+        try {
+            // Only auto-trigger permissions if user has already completed onboarding
+            if (!viewModel.uiState.value.showOnboarding) {
+                checkPermissions()
+            }
+        } catch (t: Throwable) {
+            android.util.Log.w("MainActivity", "Permission check on launch non-fatal: ${t.localizedMessage}")
         }
 
-        // Ensure next upcoming alarm is active
-        PrayerAlarmScheduler.scheduleNextAlarm(this)
+        try {
+            // Ensure next upcoming alarm is active
+            PrayerAlarmScheduler.scheduleNextAlarm(this)
+        } catch (t: Throwable) {
+            android.util.Log.w("MainActivity", "Schedule alarm on launch non-fatal: ${t.localizedMessage}")
+        }
 
         setContent {
             val uiState by viewModel.uiState.collectAsState()

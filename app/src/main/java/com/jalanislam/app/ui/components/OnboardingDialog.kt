@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeOff
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -35,65 +38,89 @@ fun OnboardingDialog(
     var currentStep by remember { mutableIntStateOf(0) }
     var selectedAudioMode by remember { mutableStateOf(NotificationMode.FULL_ADZAN) }
     var wantFeatureTour by remember { mutableStateOf(true) }
+    val configuration = LocalConfiguration.current
+    val maxDialogHeight = (configuration.screenHeightDp.dp * 0.88f).coerceIn(400.dp, 680.dp)
 
     Dialog(
-        onDismissRequest = {}, // Cannot be dismissed without completion
-        properties = DialogProperties(dismissOnBackPress = false, dismissOnClickOutside = false)
+        onDismissRequest = { onComplete(selectedAudioMode, false) },
+        properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = false)
     ) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .heightIn(max = maxDialogHeight)
+                .padding(vertical = 12.dp),
             shape = RoundedCornerShape(26.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Step Indicator Dots
+                // Header: Step Indicator Dots + Tombol Lewati
                 Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    repeat(3) { index ->
-                        val isActive = index == currentStep
-                        Box(
-                            modifier = Modifier
-                                .padding(horizontal = 4.dp)
-                                .height(8.dp)
-                                .width(if (isActive) 24.dp else 8.dp)
-                                .clip(RoundedCornerShape(4.dp))
-                                .background(
-                                    if (isActive) MaterialTheme.colorScheme.primary
-                                    else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
-                                )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        repeat(3) { index ->
+                            val isActive = index == currentStep
+                            Box(
+                                modifier = Modifier
+                                    .padding(end = 6.dp)
+                                    .height(8.dp)
+                                    .width(if (isActive) 22.dp else 8.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(
+                                        if (isActive) MaterialTheme.colorScheme.primary
+                                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f)
+                                    )
+                            )
+                        }
+                    }
+
+                    TextButton(
+                        onClick = { onComplete(selectedAudioMode, false) },
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp)
+                    ) {
+                        Text(
+                            text = "Lewati",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f),
+                            fontWeight = FontWeight.SemiBold
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
-                AnimatedContent(
-                    targetState = currentStep,
-                    label = "OnboardingStep"
-                ) { step ->
-                    when (step) {
-                        0 -> OnboardingWelcomeStep()
-                        1 -> OnboardingAudioSetupStep(
-                            selectedMode = selectedAudioMode,
-                            onSelectMode = { selectedAudioMode = it }
-                        )
-                        2 -> OnboardingPermissionsStep(
-                            wantTour = wantFeatureTour,
-                            onToggleTour = { wantFeatureTour = it }
-                        )
+                Box(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    AnimatedContent(
+                        targetState = currentStep,
+                        label = "OnboardingStep"
+                    ) { step ->
+                        when (step) {
+                            0 -> OnboardingWelcomeStep()
+                            1 -> OnboardingAudioSetupStep(
+                                selectedMode = selectedAudioMode,
+                                onSelectMode = { selectedAudioMode = it }
+                            )
+                            2 -> OnboardingPermissionsStep(
+                                wantTour = wantFeatureTour,
+                                onToggleTour = { wantFeatureTour = it }
+                            )
+                        }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(18.dp))
 
                 // Bottom Buttons
                 Row(

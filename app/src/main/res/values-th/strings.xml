@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">เวลาละหมาด ทิศกิบลัต และเสียงอะซาน</string>
+
+    <string name="nav_home">หน้าหลัก</string>
+    <string name="nav_quran">อัลกุรอาน</string>
+    <string name="nav_monthly">30 วัน</string>
+    <string name="nav_qibla">กิบลัต</string>
+    <string name="nav_settings">การตั้งค่า</string>
+
+    <string name="prayer_imsak">อิมซาก</string>
+    <string name="prayer_fajr">ศุบฮิ</string>
+    <string name="prayer_sunrise">ชุรูก</string>
+    <string name="prayer_dhuhr">ซุฮริ</string>
+    <string name="prayer_asr">อัศริ</string>
+    <string name="prayer_maghrib">มัฆริบ</string>
+    <string name="prayer_isha">อิชาอ์</string>
+
+    <string name="next_prayer">เวลาละหมาดถัดไป</string>
+    <string name="time_remaining">เวลาที่เหลือ</string>
+    <string name="imsak_fasting_reminder">เวลาอิมซาก: เตรียมถือศีลอดรอมฎอนและสุนัต</string>
+    <string name="today_schedule">ตารางเวลาละหมาดวันนี้</string>
+
+    <string name="qibla_direction">ทิศกิบลัต</string>
+    <string name="distance_to_kabah">ระยะทางสู่กะอ์บะฮ์</string>
+    <string name="qibla_bearing">องศากิบลัต</string>
+    <string name="heading_now">ทิศที่หันไป</string>
+    <string name="accuracy_high">ความแม่นยำเซนเซอร์: สูง</string>
+    <string name="accuracy_medium">ความแม่นยำเซนเซอร์: ปานกลาง</string>
+    <string name="accuracy_low">ความแม่นยำเซนเซอร์: ต่ำ (ต้องปรับเทียบ)</string>
+    <string name="calibrate_compass_hint">หมุนโทรศัพท์เป็นรูปเลข 8 เพื่อปรับเทียบเข็มทิศ</string>
+
+    <string name="manual_adjustment_title">ปรับแต่งเวลานาทีด้วยตนเอง</string>
+    <string name="manual_adjustment_desc">ปรับนาทีของเวลาละหมาดหากแตกต่างจากมัสยิดในท้องถิ่น (+/- 30 นาที)</string>
+    <string name="minute_unit">นาที</string>
+    <string name="reset_default">คืนค่าเริ่มต้น</string>
+    <string name="save_changes">บันทึกการเปลี่ยนแปลง</string>
+
+    <string name="adzan_alarm">เสียงเตือนอะซาน</string>
+    <string name="adzan_full">อะซานเต็ม</string>
+    <string name="adzan_beep">เสียงเตือนสั้น</string>
+    <string name="adzan_mute">เงียบ / สั่น</string>
+    <string name="stop_adzan">หยุดเสียงอะซาน</string>
+    <string name="it_is_prayer_time">ถึงเวลาละหมาด %s แล้ว</string>
+    <string name="prayer_time_body">ได้เวลาละหมาด %1$s สำหรับพื้นที่ %2$s และบริเวณใกล้เคียง</string>
+
+    <string name="current_location">ตำแหน่งปัจจุบัน</string>
+    <string name="use_gps">ใช้ GPS อัตโนมัติ</string>
+    <string name="select_city">เลือกเมืองด้วยตนเอง</string>
+    <string name="search_city_hint">ค้นหาชื่อเมืองหรือจังหวัด...</string>
+
+    <string name="empty_state_title">ยังไม่ได้เลือกตำแหน่ง</string>
+    <string name="empty_state_desc">โปรดเปิดใช้งาน GPS หรือเลือกเมืองเพื่อคำนวณเวลาละหมาดและทิศกิบลัตอย่างแม่นยำ</string>
+    <string name="empty_state_cta">เลือกเมืองตอนนี้</string>
+
+    <string name="loading_state_title">กำลังคำนวณเวลาละหมาด...</string>
+    <string name="loading_state_desc">กำลังคำนวณตำแหน่งทางดาราศาสตร์และทิศกิบลัตตามพิกัดของคุณ</string>
+
+    <string name="error_state_title">ไม่สามารถระบุตำแหน่งได้</string>
+    <string name="error_state_desc">ไม่สามารถอ่านพิกัดอุปกรณ์ได้ ตรวจสอบว่าเปิด GPS แล้วหรือเลือกเมืองด้วยตนเอง</string>
+    <string name="error_state_retry">ลองอีกครั้ง</string>
+
+    <string name="offline_state_banner">โหมดออฟไลน์ทำงาน — การคำนวณทำงานในเครื่องโดยไม่ต้องใช้อินเทอร์เน็ต</string>
+    <string name="slow_network_banner">สัญญาณเครือข่ายอ่อน กำลังใช้การคำนวณในเครื่องเพื่อให้เวลาแม่นยำ</string>
+
+    <string name="zero_search_title">ไม่พบเมือง</string>
+    <string name="zero_search_desc">ไม่พบเมืองที่ตรงกับคำค้นหา โปรดลองใช้ชื่ออำเภอใกล้เคียงหรือรีเซ็ตการค้นหา</string>
+    <string name="zero_search_reset">รีเซ็ตการค้นหา</string>
+    <string name="zero_search_manual">ใช้ตำแหน่ง GPS</string>
+
+    <string name="permission_denied_title">ต้องได้รับการอนุญาต</string>
+    <string name="permission_denied_desc">Jalan Islam ต้องการสิทธิ์ตำแหน่งเพื่อคำนวณเวลาละหมาด และสิทธิ์การแจ้งเตือนเพื่อให้เสียงอะซานดังตรงเวลา</string>
+    <string name="permission_denied_cta">เปิดการตั้งค่าแอป</string>
+
+    <string name="draft_preserved_notice">การตั้งค่าและการปรับเวลานาทีของคุณถูกบันทึกไว้อย่างปลอดภัย</string>
+    <string name="validation_offset_error">การปรับนาทีต้องอยู่ระหว่าง -30 ถึง +30 นาที</string>
+    <string name="success_saved_title">บันทึกสำเร็จ!</string>
+    <string name="success_saved_desc">การตั้งค่าเวลาละหมาดและการแจ้งเตือนได้รับการอัปเดตแล้ว</string>
+
+    <string name="language_selection">เลือกภาษา</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

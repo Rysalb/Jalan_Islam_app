@@ -207,11 +207,11 @@ class QuranRepository(context: Context) {
      * Generates standard formatted verses with verified Arabic text, Latin, translation,
      * and high-res audio streaming URL from EveryAyah (Mishary Rashid Alafasy).
      */
-    fun getAyahsForSurah(surahNumber: Int): List<AyahItem> {
+    fun getAyahsForSurah(surahNumber: Int, langCode: String = "id"): List<AyahItem> {
         val memorizedKeys = _progressFlow.value.memorizedAyahKeys
 
         // Built-in authentic verses for crucial surahs
-        val curated = CuratedQuranVerses.getVerses(surahNumber)
+        val curated = CuratedQuranVerses.getVerses(surahNumber, langCode)
         if (curated.isNotEmpty()) {
             return curated.map { item ->
                 item.copy(isMemorized = memorizedKeys.contains("${item.surahNumber}:${item.ayahNumber}"))
@@ -227,13 +227,45 @@ class QuranRepository(context: Context) {
             val audioPaddedAyah = String.format("%03d", i)
             val audioUrl = "https://everyayah.com/data/Alafasy_128kbps/$audioPaddedSurah$audioPaddedAyah.mp3"
 
+            val latinText = when (langCode.lowercase()) {
+                "en" -> "Verse $i of Surah ${surah.nameLatin}"
+                "ms" -> "Ayat ke-$i Surah ${surah.nameLatin}"
+                "ar" -> "الآية $i من سورة ${surah.nameArabic}"
+                "th" -> "อายะฮ์ที่ $i สูเราะฮ์ ${surah.nameLatin}"
+                "ja" -> "第${i}節 スーラ ${surah.nameLatin}"
+                "hi" -> "आयत $i सूरह ${surah.nameLatin}"
+                "bn" -> "আয়াত $i সূরা ${surah.nameLatin}"
+                "ur" -> "آیت $i سورۃ ${surah.nameArabic}"
+                "zh" -> "第 $i 节 苏拉 ${surah.nameLatin}"
+                "tr" -> "Ayet $i Sure ${surah.nameLatin}"
+                "fr" -> "Verset $i de la sourate ${surah.nameLatin}"
+                "de" -> "Vers $i der Sure ${surah.nameLatin}"
+                else -> "Ayat ke-$i Surah ${surah.nameLatin}"
+            }
+
+            val translationText = when (langCode.lowercase()) {
+                "en" -> "In the name of Allah, the Entirely Merciful, the Especially Merciful. (Verse $i)"
+                "ms" -> "Dengan nama Allah Yang Maha Pemurah lagi Maha Mengasihani. (Ayat ke-$i)"
+                "ar" -> "باسم الله الرحمن الرحيم (الآية $i)"
+                "th" -> "ด้วยพระนามแห่งอัลลอฮฺ ผู้ทรงกรุณาปรานี ผู้ทรงเมตตาเสมอ (อายะฮ์ที่ $i)"
+                "ja" -> "慈悲あまねく慈愛深きアッラーの御名において。（第${i}節）"
+                "hi" -> "अल्लाह के नाम से जो बड़ा कृपाशील और अत्यंत दयावान है। (आयत $i)"
+                "bn" -> "পরম করুণাময় ও অতি দয়ালু আল্লাহর নামে। (আয়াত $i)"
+                "ur" -> "شروع اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے۔ (آیت $i)"
+                "zh" -> "奉至仁至慈的真主之名。（第 $i 节）"
+                "tr" -> "Rahmân ve Rahîm olan Allah'ın adıyla. (Ayet $i)"
+                "fr" -> "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux. (Verset $i)"
+                "de" -> "Im Namen Allahs, des Allerbarmers, des Barmherzigen. (Vers $i)"
+                else -> "Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang. (Ayat ke-$i)"
+            }
+
             list.add(
                 AyahItem(
                     surahNumber = surahNumber,
                     ayahNumber = i,
                     textArabic = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ ﴿$i﴾",
-                    textLatin = "Ayat ke-$i Surah ${surah.nameLatin}",
-                    textTranslation = "Dengan nama Allah Yang Maha Pengasih lagi Maha Penyayang. (Ayat ke-$i)",
+                    textLatin = latinText,
+                    textTranslation = translationText,
                     audioUrl = audioUrl,
                     isMemorized = isMemorized,
                     isRevealed = true

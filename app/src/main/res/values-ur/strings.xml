@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">راہِ اسلام</string>
+    <string name="tagline">اوقاتِ نماز، سمتِ قبلہ اور اذان الارم</string>
+
+    <string name="nav_home">ہوم</string>
+    <string name="nav_quran">قرآن</string>
+    <string name="nav_monthly">30 دن</string>
+    <string name="nav_qibla">قبلہ</string>
+    <string name="nav_settings">ترتیبات</string>
+
+    <string name="prayer_imsak">امساک</string>
+    <string name="prayer_fajr">فجر</string>
+    <string name="prayer_sunrise">طلوعِ آفتاب</string>
+    <string name="prayer_dhuhr">ظہر</string>
+    <string name="prayer_asr">عصر</string>
+    <string name="prayer_maghrib">مغرب</string>
+    <string name="prayer_isha">عشاء</string>
+
+    <string name="next_prayer">اگلی نماز</string>
+    <string name="time_remaining">باقی وقت</string>
+    <string name="imsak_fasting_reminder">وقتِ امساک: رمضان یا نفلی روزے کی تیاری کریں</string>
+    <string name="today_schedule">آج کے اوقاتِ نماز</string>
+
+    <string name="qibla_direction">سمتِ قبلہ</string>
+    <string name="distance_to_kabah">خانہ کعبہ کا فاصلہ</string>
+    <string name="qibla_bearing">زاویہ قبلہ</string>
+    <string name="heading_now">موجودہ سمت</string>
+    <string name="accuracy_high">سینسر کی درستگی: اعلیٰ</string>
+    <string name="accuracy_medium">سینسر کی درستگی: درمیانی</string>
+    <string name="accuracy_low">سینسر کی درستگی: کم (کیلیبریشن درکار ہے)</string>
+    <string name="calibrate_compass_hint">قطب نما کو کیلیبریٹ کرنے کے لیے فون کو 8 کے انداز میں گھمائیں</string>
+
+    <string name="manual_adjustment_title">منٹوں کی دستی ترتیب</string>
+    <string name="manual_adjustment_desc">مقامی مسجد کے وقت کے مطابق منٹ تبدیل کریں (+/- 10 منٹ)</string>
+    <string name="minute_unit">منٹ</string>
+    <string name="reset_default">ڈیفالٹ پر ری سیٹ کریں</string>
+    <string name="save_changes">تبدیلیاں محفوظ کریں</string>
+
+    <string name="adzan_alarm">اذان الارم</string>
+    <string name="adzan_full">مکمل اذان</string>
+    <string name="adzan_beep">مختصر بیپ</string>
+    <string name="adzan_mute">خاموش / وائبریشن</string>
+    <string name="stop_adzan">اذان بند کریں</string>
+    <string name="it_is_prayer_time">%s کی نماز کا وقت ہو گیا ہے</string>
+    <string name="prayer_time_body">%2$s اور گردونواح کے لیے %1$s کی نماز کا وقت ہو چکا ہے</string>
+
+    <string name="current_location">موجودہ مقام</string>
+    <string name="use_gps">خودکار GPS</string>
+    <string name="select_city">شہر خود منتخب کریں</string>
+    <string name="search_city_hint">شہر کا نام تلاش کریں...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">کوئی مقام منتخب نہیں</string>
+    <string name="empty_state_desc">اوقاتِ نماز اور قبلہ سمت معلوم کرنے کے لیے براہ کرم GPS آن کریں یا شہر منتخب کریں۔</string>
+    <string name="empty_state_cta">ابھی شہر منتخب کریں</string>
+
+    <string name="loading_state_title">اوقاتِ نماز کا حساب لگایا جا رہا ہے...</string>
+    <string name="loading_state_desc">آپ کے علاقے کے کوآرڈینیٹس اور زاویہ قبلہ کا حساب لگایا جا رہا ہے۔</string>
+
+    <string name="error_state_title">مقام حاصل کرنے میں ناکامی</string>
+    <string name="error_state_desc">ڈیوائس کے کوآرڈینیٹس نہیں ملے، GPS چیک کریں یا دستی شہر چنیں۔</string>
+    <string name="error_state_retry">دوبارہ کوشش کریں</string>
+
+    <string name="offline_state_banner">آف لائن موڈ فعال ہے — حساب کتاب انٹرنیٹ کے بغیر ڈیوائس پر ہوتا ہے۔</string>
+    <string name="slow_network_banner">سست انٹرنیٹ کنکشن، مقامی حساب کتاب استعمال ہو رہا ہے۔</string>
+
+    <string name="zero_search_title">کوئی شہر نہیں ملا</string>
+    <string name="zero_search_desc">تلاش کردہ لفظ سے کوئی شہر نہیں ملا، دوسرا نام آزمائیں۔</string>
+    <string name="zero_search_reset">تلاش ری سیٹ کریں</string>
+    <string name="zero_search_manual">GPS مقام استعمال کریں</string>
+
+    <string name="permission_denied_title">اجازت درکار ہے</string>
+    <string name="permission_denied_desc">بروقت اذان اور درست قبلہ کے لیے لوکیشن اور نوٹیفکیشن کی اجازت درکار ہے۔</string>
+    <string name="permission_denied_cta">ایپ کی ترتیبات کھولیں</string>
+
+    <string name="draft_preserved_notice">آپ کی ترتیبات محفوظ ہو گئی ہیں۔</string>
+    <string name="validation_offset_error">منٹوں کی ایڈجسٹمنٹ -10 اور +10 کے درمیان ہونی چاہیے</string>
+    <string name="success_saved_title">کامیابی سے محفوظ ہو گیا!</string>
+    <string name="success_saved_desc">آپ کی نماز اور اذان کی ترتیبات اپ ڈیٹ ہو گئی ہیں۔</string>
+
+    <string name="language_selection">زبان کا انتخاب</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

@@ -218,6 +218,14 @@ fun SettingsScreen(
                 subtitle = when (currentLanguage) {
                     "ms" -> stringResource(R.string.lang_ms)
                     "en" -> stringResource(R.string.lang_en)
+                    "ar" -> stringResource(R.string.lang_ar)
+                    "th" -> stringResource(R.string.lang_th)
+                    "ja" -> stringResource(R.string.lang_ja)
+                    "hi" -> stringResource(R.string.lang_hi)
+                    "bn" -> stringResource(R.string.lang_bn)
+                    "ur" -> stringResource(R.string.lang_ur)
+                    "zh" -> stringResource(R.string.lang_zh)
+                    "tr" -> stringResource(R.string.lang_tr)
                     "fr" -> stringResource(R.string.lang_fr)
                     "de" -> stringResource(R.string.lang_de)
                     else -> stringResource(R.string.lang_id)
@@ -726,13 +734,23 @@ private fun LanguageSelectionDialog(
         "id" to stringResource(R.string.lang_id),
         "ms" to stringResource(R.string.lang_ms),
         "en" to stringResource(R.string.lang_en),
+        "ar" to stringResource(R.string.lang_ar),
+        "th" to stringResource(R.string.lang_th),
+        "ja" to stringResource(R.string.lang_ja),
+        "hi" to stringResource(R.string.lang_hi),
+        "bn" to stringResource(R.string.lang_bn),
+        "ur" to stringResource(R.string.lang_ur),
+        "zh" to stringResource(R.string.lang_zh),
+        "tr" to stringResource(R.string.lang_tr),
         "fr" to stringResource(R.string.lang_fr),
         "de" to stringResource(R.string.lang_de)
     )
 
     Dialog(onDismissRequest = onDismiss) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
             shape = RoundedCornerShape(20.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
@@ -745,25 +763,32 @@ private fun LanguageSelectionDialog(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                languages.forEach { (code, name) ->
-                    val isSelected = code == currentLang
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent)
-                            .clickable { onSelect(code) }
-                            .padding(horizontal = 12.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = name,
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
-                        )
-                        if (isSelected) {
-                            Icon(Icons.Filled.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 380.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    languages.forEach { (code, name) ->
+                        val isSelected = code == currentLang
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.12f) else Color.Transparent)
+                                .clickable { onSelect(code) }
+                                .padding(horizontal = 12.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                            )
+                            if (isSelected) {
+                                Icon(Icons.Filled.Check, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                            }
                         }
                     }
                 }

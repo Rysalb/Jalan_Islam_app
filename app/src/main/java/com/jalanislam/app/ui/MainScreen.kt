@@ -95,7 +95,8 @@ fun MainScreen(
         SurahDetailScreen(
             surah = surah,
             quranRepo = viewModel.quranRepo,
-            onBack = { selectedSurahForDetail = null }
+            onBack = { selectedSurahForDetail = null },
+            currentLanguage = uiState.language
         )
         return
     }

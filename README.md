@@ -90,7 +90,7 @@
   * 🏜️ **Emas Padang Pasir (Amber)**: Warm desert sand gold.
 * **Display Modes**: System Default, Light Mode, and True Dark Mode.
 * **Senior-Friendly Text Resizing (Aksesibilitas Lansia)**: Choose between Small (0.85x), Normal (1.0x), Large (1.2x), and Extra (1.4x) font scaling for comfortable reading.
-* **Multi-Language Support**: Indonesian, Malay (*Bahasa Melayu*), English, French (*Français*), and German (*Deutsch*).
+* **Comprehensive Multi-Language & Adaptive Quran Translations (13 Languages)**: Indonesian (*Bahasa Indonesia*), Malay (*Bahasa Melayu*), English, Arabic (*العربية*), Thai (*ภาษาไทย*), Japanese (*日本語*), Hindi (*हिन्दी*), Bengali (*বাংলা*), Urdu (*اردو*), Chinese (*中文*), Turkish (*Türkçe*), French (*Français*), and German (*Deutsch*). Both app UI strings and Quran verses dynamically adapt to the selected locale with RTL (Right-to-Left) direction support for Arabic and Urdu.
 
 ---
 

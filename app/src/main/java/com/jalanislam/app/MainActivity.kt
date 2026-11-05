@@ -19,9 +19,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.core.content.ContextCompat
 import com.jalanislam.app.alarm.PrayerAlarmScheduler
 import com.jalanislam.app.ui.MainScreen
@@ -67,7 +72,29 @@ class MainActivity : ComponentActivity() {
                 fontScale = currentDensity.fontScale * uiState.fontScale
             )
 
-            CompositionLocalProvider(LocalDensity provides scaledDensity) {
+            val locale = remember(uiState.language) {
+                Locale(uiState.language).also {
+                    Locale.setDefault(it)
+                }
+            }
+            val configuration = remember(uiState.language) {
+                Configuration(resources.configuration).apply {
+                    setLocale(locale)
+                    setLayoutDirection(locale)
+                }
+            }
+            val localizedContext = remember(uiState.language) {
+                createConfigurationContext(configuration)
+            }
+            val isRtl = uiState.language == "ar" || uiState.language == "ur"
+            val layoutDirection = if (isRtl) LayoutDirection.Rtl else LayoutDirection.Ltr
+
+            CompositionLocalProvider(
+                LocalDensity provides scaledDensity,
+                LocalConfiguration provides configuration,
+                LocalContext provides localizedContext,
+                LocalLayoutDirection provides layoutDirection
+            ) {
                 JalanIslamTheme(
                     paletteId = uiState.themePalette,
                     themeMode = uiState.themeMode

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">طريق الإسلام</string>
+    <string name="tagline">مواقيت الصلاة، اتجاه القبلة، ومنبه الأذان</string>
+
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_quran">القرآن</string>
+    <string name="nav_monthly">٣٠ يوماً</string>
+    <string name="nav_qibla">القبلة</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <string name="prayer_imsak">الإمساك</string>
+    <string name="prayer_fajr">الفجر</string>
+    <string name="prayer_sunrise">الشروق</string>
+    <string name="prayer_dhuhr">الظهر</string>
+    <string name="prayer_asr">العصر</string>
+    <string name="prayer_maghrib">المغرب</string>
+    <string name="prayer_isha">العشاء</string>
+
+    <string name="next_prayer">الصلاة القادمة</string>
+    <string name="time_remaining">الوقت المتبقي</string>
+    <string name="imsak_fasting_reminder">وقت الإمساك: الاستعداد لصيام رمضان أو التطوع</string>
+    <string name="today_schedule">جدول مواقيت الصلاة اليوم</string>
+
+    <string name="qibla_direction">اتجاه القبلة</string>
+    <string name="distance_to_kabah">المسافة إلى الكعبة</string>
+    <string name="qibla_bearing">زاوية القبلة</string>
+    <string name="heading_now">الاتجاه الحالي</string>
+    <string name="accuracy_high">دقة الحساس: عالية</string>
+    <string name="accuracy_medium">دقة الحساس: متوسطة</string>
+    <string name="accuracy_low">دقة الحساس: منخفضة (يلزم المعايرة)</string>
+    <string name="calibrate_compass_hint">قم بتحريك الهاتف على شكل رقم 8 لمعايرة البوصلة</string>
+
+    <string name="manual_adjustment_title">تعديل الدقائق يدوياً</string>
+    <string name="manual_adjustment_desc">قم بتعديل الدقائق لتتطابق مع المسجد المحلي (+/- 10 دقائق)</string>
+    <string name="minute_unit">دقيقة</string>
+    <string name="reset_default">إعادة التعيين للافتراضي</string>
+    <string name="save_changes">حفظ التغييرات</string>
+
+    <string name="adzan_alarm">منبه الأذان</string>
+    <string name="adzan_full">أذان كامل</string>
+    <string name="adzan_beep">تنبيه قصير</string>
+    <string name="adzan_mute">صامت / اهتزاز</string>
+    <string name="stop_adzan">إيقاف الأذان</string>
+    <string name="it_is_prayer_time">حان الآن موعد صلاة %s</string>
+    <string name="prayer_time_body">حان الآن وقت صلاة %1$s لمنطقة %2$s وما جاورها</string>
+
+    <string name="current_location">الموقع الحالي</string>
+    <string name="use_gps">تحديد تلقائي عبر GPS</string>
+    <string name="select_city">اختر المدينة يدوياً</string>
+    <string name="search_city_hint">ابحث عن اسم المدينة...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">لم يتم تحديد الموقع</string>
+    <string name="empty_state_desc">يرجى تفعيل GPS أو اختيار مدينة لحساب مواقيت الصلاة واتجاه القبلة بدقة.</string>
+    <string name="empty_state_cta">اختر المدينة الآن</string>
+
+    <string name="loading_state_title">جاري حساب مواقيت الصلاة...</string>
+    <string name="loading_state_desc">يتم حساب الإحداثيات الفلكية وزاوية القبلة لمنطقتك.</string>
+
+    <string name="error_state_title">تعذر تحديد الموقع</string>
+    <string name="error_state_desc">تعذر قراءة إحداثيات الجهاز. تأكد من تفعيل GPS أو اختر مدينة يدوياً.</string>
+    <string name="error_state_retry">إعادة المحاولة</string>
+
+    <string name="offline_state_banner">وضع عدم الاتصال مفعّل — الحسابات تتم محلياً دون الحاجة لإنترنت.</string>
+    <string name="slow_network_banner">اتصال الشبكة ضعيف. يتم الاعتماد على الحسابات المحلية للحفاظ على الدقة.</string>
+
+    <string name="zero_search_title">لم يتم العثور على المدينة</string>
+    <string name="zero_search_desc">لا توجد مدينة تطابق كلمة البحث. جرب اسماً آخر.</string>
+    <string name="zero_search_reset">إعادة تعيين البحث</string>
+    <string name="zero_search_manual">استخدام موقع GPS</string>
+
+    <string name="permission_denied_title">الأذونات مطلوبة</string>
+    <string name="permission_denied_desc">يحتاج تطبيق طريق الإسلام إلى إذن الموقع والإشعارات لإطلاق الأذان في موعده بدقة.</string>
+    <string name="permission_denied_cta">فتح إعدادات التطبيق</string>
+
+    <string name="draft_preserved_notice">تم حفظ إعداداتك وتعديل الدقائق تلقائياً بأمان.</string>
+    <string name="validation_offset_error">يجب أن يكون تعديل الدقائق بين -10 و +10 دقائق</string>
+    <string name="success_saved_title">تم الحفظ بنجاح!</string>
+    <string name="success_saved_desc">تم تحديث إعدادات الصلاة وتفضيلات الأذان.</string>
+
+    <string name="language_selection">اختيار اللغة</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

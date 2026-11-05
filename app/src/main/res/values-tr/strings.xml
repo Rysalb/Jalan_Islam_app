@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">İslam Yolu</string>
+    <string name="tagline">Namaz Vakitleri, Kıble Yönü ve Ezan Alarmı</string>
+
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_quran">Kuran</string>
+    <string name="nav_monthly">30 Gün</string>
+    <string name="nav_qibla">Kıble</string>
+    <string name="nav_settings">Ayarlar</string>
+
+    <string name="prayer_imsak">İmsak</string>
+    <string name="prayer_fajr">Sabah</string>
+    <string name="prayer_sunrise">Güneş</string>
+    <string name="prayer_dhuhr">Öğle</string>
+    <string name="prayer_asr">İkindi</string>
+    <string name="prayer_maghrib">Akşam</string>
+    <string name="prayer_isha">Yatsı</string>
+
+    <string name="next_prayer">Sıradaki Vakit</string>
+    <string name="time_remaining">Kalan Süre</string>
+    <string name="imsak_fasting_reminder">İmsak Vakti: Oruç hazırlığı yapınız</string>
+    <string name="today_schedule">Bugünkü Namaz Vakitleri</string>
+
+    <string name="qibla_direction">Kıble Yönü</string>
+    <string name="distance_to_kabah">Kabe\'ye Uzaklık</string>
+    <string name="qibla_bearing">Kıble Açısı</string>
+    <string name="heading_now">Mevcut Yön</string>
+    <string name="accuracy_high">Sensör Doğruluğu: Yüksek</string>
+    <string name="accuracy_medium">Sensör Doğruluğu: Orta</string>
+    <string name="accuracy_low">Sensör Doğruluğu: Düşük (Kalibrasyon Gerekli)</string>
+    <string name="calibrate_compass_hint">Pusulayı kalibre etmek için telefonu 8 şeklinde hareket ettirin</string>
+
+    <string name="manual_adjustment_title">Manuel Dakika Ayarı</string>
+    <string name="manual_adjustment_desc">Yerel cami vakitleriyle eşitlemek için dakikaları ayarlayın (+/- 10 dakika)</string>
+    <string name="minute_unit">dk</string>
+    <string name="reset_default">Varsayılana Sıfırla</string>
+    <string name="save_changes">Değişiklikleri Kaydet</string>
+
+    <string name="adzan_alarm">Ezan Alarmı</string>
+    <string name="adzan_full">Tam Ezan</string>
+    <string name="adzan_beep">Kısa Ses</string>
+    <string name="adzan_mute">Sessiz / Titreşim</string>
+    <string name="stop_adzan">Ezanı Durdur</string>
+    <string name="it_is_prayer_time">%s Vakti Girdi</string>
+    <string name="prayer_time_body">%2$s ve çevresi için %1$s namaz vakti geldi</string>
+
+    <string name="current_location">Mevcut Konum</string>
+    <string name="use_gps">Otomatik GPS</string>
+    <string name="select_city">Şehri Manuel Seç</string>
+    <string name="search_city_hint">Şehir adı ara...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">Konum Seçilmedi</string>
+    <string name="empty_state_desc">Namaz vakitlerini ve kıble yönünü doğru hesaplamak için lütfen GPS\'i açın veya bir şehir seçin.</string>
+    <string name="empty_state_cta">Şimdi Şehir Seç</string>
+
+    <string name="loading_state_title">Namaz Vakitleri Hesaplanıyor...</string>
+    <string name="loading_state_desc">Bölgeniz için astronomik koordinatlar ve kıble açısı hesaplanıyor.</string>
+
+    <string name="error_state_title">Konum Alınamadı</string>
+    <string name="error_state_desc">Cihaz koordinatları okunamadı. GPS\'in açık olduğunu kontrol edin veya manuel şehir seçin.</string>
+    <string name="error_state_retry">Tekrar Dene</string>
+
+    <string name="offline_state_banner">Çevrimdışı Mod Aktif — Hesaplamalar internet olmadan cihazda yapılır.</string>
+    <string name="slow_network_banner">Zayıf internet bağlantısı. Vakitlerin doğruluğu için yerel hesaplama kullanılıyor.</string>
+
+    <string name="zero_search_title">Şehir Bulunamadı</string>
+    <string name="zero_search_desc">Aramanızla eşleşen şehir bulunamadı. Başka bir isim deneyin.</string>
+    <string name="zero_search_reset">Aramayı Sıfırla</string>
+    <string name="zero_search_manual">GPS Konumunu Kullan</string>
+
+    <string name="permission_denied_title">İzinler Gerekli</string>
+    <string name="permission_denied_desc">İslam Yolu, ezanın zamanında okunması ve doğru kıble için Konum ve Bildirim izinlerine ihtiyaç duyar.</string>
+    <string name="permission_denied_cta">Uygulama Ayarlarını Aç</string>
+
+    <string name="draft_preserved_notice">Ayarlarınız ve dakika düzeltmeleriniz güvenle kaydedildi.</string>
+    <string name="validation_offset_error">Dakika ayarı -10 ile +10 arasında olmalıdır</string>
+    <string name="success_saved_title">Başarıyla Kaydedildi!</string>
+    <string name="success_saved_desc">Namaz ayarlarınız ve ezan tercihleriniz güncellendi.</string>
+
+    <string name="language_selection">Dil Seçimi</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

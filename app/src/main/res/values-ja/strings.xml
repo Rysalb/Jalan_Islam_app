@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">礼拝時間、キブラ方向、アザーン通知</string>
+
+    <string name="nav_home">ホーム</string>
+    <string name="nav_quran">クルアーン</string>
+    <string name="nav_monthly">30日カレンダー</string>
+    <string name="nav_qibla">キブラ</string>
+    <string name="nav_settings">設定</string>
+
+    <string name="prayer_imsak">イムサーク</string>
+    <string name="prayer_fajr">ファジュル</string>
+    <string name="prayer_sunrise">日の出</string>
+    <string name="prayer_dhuhr">ズフル</string>
+    <string name="prayer_asr">アスル</string>
+    <string name="prayer_maghrib">マグリブ</string>
+    <string name="prayer_isha">イシャー</string>
+
+    <string name="next_prayer">次の礼拝時間</string>
+    <string name="time_remaining">残り時間</string>
+    <string name="imsak_fasting_reminder">イムサーク時間：断食（ラマダーン・スンナ）の準備</string>
+    <string name="today_schedule">本日の礼拝スケジュール</string>
+
+    <string name="qibla_direction">キブラの方向</string>
+    <string name="distance_to_kabah">カアバ神殿までの距離</string>
+    <string name="qibla_bearing">キブラ角度</string>
+    <string name="heading_now">現在の向き</string>
+    <string name="accuracy_high">センサー精度：高</string>
+    <string name="accuracy_medium">センサー精度：中</string>
+    <string name="accuracy_low">センサー精度：低（要調整）</string>
+    <string name="calibrate_compass_hint">スマホを8の字に動かしてコンパスを校正してください</string>
+
+    <string name="manual_adjustment_title">手動時間補正（分）</string>
+    <string name="manual_adjustment_desc">地域のモスクに合わせて時間を調整します（+/- 30分）</string>
+    <string name="minute_unit">分</string>
+    <string name="reset_default">初期値に戻す</string>
+    <string name="save_changes">変更を保存</string>
+
+    <string name="adzan_alarm">アザーンアラーム</string>
+    <string name="adzan_full">フルアザーン</string>
+    <string name="adzan_beep">ビープ音</string>
+    <string name="adzan_mute">消音 / バイブ</string>
+    <string name="stop_adzan">アザーンを停止</string>
+    <string name="it_is_prayer_time">%s の時間になりました</string>
+    <string name="prayer_time_body">%2$s 地域および周辺の %1$s 礼拝の時間です</string>
+
+    <string name="current_location">現在地</string>
+    <string name="use_gps">自動GPSを使用</string>
+    <string name="select_city">都市を手動選択</string>
+    <string name="search_city_hint">都市名を検索...</string>
+
+    <string name="empty_state_title">位置情報が未選択です</string>
+    <string name="empty_state_desc">GPSを有効にするか都市を選択して、正確な礼拝時間とキブラを計算してください</string>
+    <string name="empty_state_cta">都市を選択する</string>
+
+    <string name="loading_state_title">礼拝時間を計算中...</string>
+    <string name="loading_state_desc">現在地の座標から天文学的計算を行っています</string>
+
+    <string name="error_state_title">位置情報の取得に失敗しました</string>
+    <string name="error_state_desc">座標を取得できません。GPSを確認するか都市を手動選択してください</string>
+    <string name="error_state_retry">再試行</string>
+
+    <string name="offline_state_banner">オフラインモード — インターネット不要で端末内で高精度計算中</string>
+    <string name="slow_network_banner">ネットワークが不安定なため、ローカル計算エンジンを使用しています</string>
+
+    <string name="zero_search_title">都市が見つかりません</string>
+    <string name="zero_search_desc">キーワードに一致する都市がありません。再検索してください</string>
+    <string name="zero_search_reset">検索をリセット</string>
+    <string name="zero_search_manual">GPSを使用</string>
+
+    <string name="permission_denied_title">アクセス権限が必要です</string>
+    <string name="permission_denied_desc">礼拝時間算出のための位置情報、定刻アザーンのための通知権限が必要です</string>
+    <string name="permission_denied_cta">アプリ設定を開く</string>
+
+    <string name="draft_preserved_notice">設定と時間補正は安全に自動保存されました</string>
+    <string name="validation_offset_error">補正値は -30 から +30 分の間で設定してください</string>
+    <string name="success_saved_title">保存しました！</string>
+    <string name="success_saved_desc">礼拝時間とアラーム設定が更新されました</string>
+
+    <string name="language_selection">言語の選択</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

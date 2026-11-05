@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">伊斯兰之路</string>
+    <string name="tagline">礼拜时间、朝向指示与宣礼闹钟</string>
+
+    <string name="nav_home">首页</string>
+    <string name="nav_quran">古兰经</string>
+    <string name="nav_monthly">30天</string>
+    <string name="nav_qibla">朝向</string>
+    <string name="nav_settings">设置</string>
+
+    <string name="prayer_imsak">封斋</string>
+    <string name="prayer_fajr">晨礼</string>
+    <string name="prayer_sunrise">日出</string>
+    <string name="prayer_dhuhr">晌礼</string>
+    <string name="prayer_asr">晡礼</string>
+    <string name="prayer_maghrib">昏礼</string>
+    <string name="prayer_isha">宵礼</string>
+
+    <string name="next_prayer">下一次礼拜</string>
+    <string name="time_remaining">剩余时间</string>
+    <string name="imsak_fasting_reminder">封斋时间：准备斋月或副功斋戒</string>
+    <string name="today_schedule">今日礼拜时间表</string>
+
+    <string name="qibla_direction">克尔白朝向</string>
+    <string name="distance_to_kabah">至克尔白距离</string>
+    <string name="qibla_bearing">朝向角度</string>
+    <string name="heading_now">当前朝向</string>
+    <string name="accuracy_high">传感器精度：高</string>
+    <string name="accuracy_medium">传感器精度：中</string>
+    <string name="accuracy_low">传感器精度：低（需校准）</string>
+    <string name="calibrate_compass_hint">请沿8字形转动手机以校准指南针</string>
+
+    <string name="manual_adjustment_title">手动分钟微调</string>
+    <string name="manual_adjustment_desc">根据当地清真寺微调礼拜时间（+/- 10分钟）</string>
+    <string name="minute_unit">分钟</string>
+    <string name="reset_default">重置为默认</string>
+    <string name="save_changes">保存更改</string>
+
+    <string name="adzan_alarm">宣礼闹钟</string>
+    <string name="adzan_full">完整宣礼</string>
+    <string name="adzan_beep">简短提示音</string>
+    <string name="adzan_mute">静音 / 振动</string>
+    <string name="stop_adzan">停止宣礼</string>
+    <string name="it_is_prayer_time">已到 %s 时间</string>
+    <string name="prayer_time_body">%2$s 及周边地区已到 %1$s 礼拜时间</string>
+
+    <string name="current_location">当前位置</string>
+    <string name="use_gps">自动 GPS 定位</string>
+    <string name="select_city">手动选择城市</string>
+    <string name="search_city_hint">搜索城市名称...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">未选择位置</string>
+    <string name="empty_state_desc">请开启 GPS 或选择城市，以精准计算礼拜时间与朝向。</string>
+    <string name="empty_state_cta">立即选择城市</string>
+
+    <string name="loading_state_title">正在计算礼拜时间...</string>
+    <string name="loading_state_desc">正在根据您所在区域的天文坐标与朝向角度进行计算。</string>
+
+    <string name="error_state_title">获取位置失败</string>
+    <string name="error_state_desc">无法获取设备坐标。请确保已开启 GPS 或手动选择城市。</string>
+    <string name="error_state_retry">重试</string>
+
+    <string name="offline_state_banner">离线模式生效中 — 本地进行天文计算，无需消耗流量。</string>
+    <string name="slow_network_banner">网络连接较弱。正在使用本地计算以保证时间准确。</string>
+
+    <string name="zero_search_title">未找到相关城市</string>
+    <string name="zero_search_desc">没有找到符合条件的城市，请尝试其他关键词。</string>
+    <string name="zero_search_reset">重置搜索</string>
+    <string name="zero_search_manual">使用 GPS 定位</string>
+
+    <string name="permission_denied_title">需要权限支持</string>
+    <string name="permission_denied_desc">伊斯兰之路需要位置和通知权限，以确保准时播放宣礼与准确指引朝向。</string>
+    <string name="permission_denied_cta">前往系统设置</string>
+
+    <string name="draft_preserved_notice">您的设置与微调已自动安全保存在设备中。</string>
+    <string name="validation_offset_error">分钟调整必须在 -10 至 +10 分钟之间</string>
+    <string name="success_saved_title">保存成功！</string>
+    <string name="success_saved_desc">礼拜设置与宣礼偏好已更新。</string>
+
+    <string name="language_selection">语言选择</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

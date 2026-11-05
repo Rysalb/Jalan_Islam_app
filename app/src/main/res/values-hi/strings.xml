@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jalan Islam</string>
+    <string name="tagline">नमाज़ का समय, क़िबला दिशा और अज़ान अलार्म</string>
+
+    <string name="nav_home">होम</string>
+    <string name="nav_quran">क़ुरआन</string>
+    <string name="nav_monthly">30 दिन</string>
+    <string name="nav_qibla">क़िबला</string>
+    <string name="nav_settings">सेटिंग्स</string>
+
+    <string name="prayer_imsak">इमसाक</string>
+    <string name="prayer_fajr">फ़ज्र</string>
+    <string name="prayer_sunrise">सूर्योदय</string>
+    <string name="prayer_dhuhr">ज़ुहर</string>
+    <string name="prayer_asr">असर</string>
+    <string name="prayer_maghrib">मग़रिब</string>
+    <string name="prayer_isha">ईशा</string>
+
+    <string name="next_prayer">अगली नमाज़</string>
+    <string name="time_remaining">शेष समय</string>
+    <string name="imsak_fasting_reminder">इमसाक समय: रोज़े की तैयारी (रमज़ान / सुन्नत)</string>
+    <string name="today_schedule">आज की नमाज़ का समय</string>
+
+    <string name="qibla_direction">क़िबला की दिशा</string>
+    <string name="distance_to_kabah">काबा की दूरी</string>
+    <string name="qibla_bearing">क़िबला कोण</string>
+    <string name="heading_now">वर्तमान दिशा</string>
+    <string name="accuracy_high">सेंसर सटीकता: उच्च</string>
+    <string name="accuracy_medium">सेंसर सटीकता: मध्यम</string>
+    <string name="accuracy_low">सेंसर सटीकता: कम (कैलिब्रेट करें)</string>
+    <string name="calibrate_compass_hint">कम्पास को कैलिब्रेट करने के लिए फ़ोन को 8 के आकार में घुमाएं</string>
+
+    <string name="manual_adjustment_title">मैन्युअल समय सुधार (मिनट)</string>
+    <string name="manual_adjustment_desc">स्थानीय मस्जिद के अनुसार समय समायोजित करें (+/- 30 मिनट)</string>
+    <string name="minute_unit">मिनट</string>
+    <string name="reset_default">डिफ़ॉल्ट पर रीसेट करें</string>
+    <string name="save_changes">बदलाव सहेजें</string>
+
+    <string name="adzan_alarm">अज़ान अलार्म</string>
+    <string name="adzan_full">पूरी अज़ान</string>
+    <string name="adzan_beep">बीप ध्वनि</string>
+    <string name="adzan_mute">म्यूट / कंपन</string>
+    <string name="stop_adzan">अज़ान बंद करें</string>
+    <string name="it_is_prayer_time">%s नमाज़ का समय हो गया है</string>
+    <string name="prayer_time_body">%2$s और आसपास के क्षेत्र के लिए %1$s की नमाज़ का समय</string>
+
+    <string name="current_location">वर्तमान स्थान</string>
+    <string name="use_gps">स्वचालित जीपीएस का उपयोग करें</string>
+    <string name="select_city">शहर चुनें</string>
+    <string name="search_city_hint">शहर का नाम खोजें...</string>
+
+    <string name="empty_state_title">कोई स्थान नहीं चुना गया</string>
+    <string name="empty_state_desc">सटीक नमाज़ समय और क़िबला के लिए जीपीएस चालू करें या शहर चुनें</string>
+    <string name="empty_state_cta">शहर चुनें</string>
+
+    <string name="loading_state_title">नमाज़ के समय की गणना हो रही है...</string>
+    <string name="loading_state_desc">आपके निर्देशांकों के आधार पर गणना की जा रही है</string>
+
+    <string name="error_state_title">स्थान प्राप्त करने में विफल</string>
+    <string name="error_state_desc">स्थान नहीं मिल सका। जीपीएस जांचें या मैन्युअल रूप से शहर चुनें</string>
+    <string name="error_state_retry">पुनः प्रयास करें</string>
+
+    <string name="offline_state_banner">ऑफ़लाइन मोड सक्रिय — इंटरनेट के बिना स्थानीय गणना चल रही है</string>
+    <string name="slow_network_banner">धीमा नेटवर्क। सटीक समय के लिए ऑफ़लाइन गणना का उपयोग किया जा रहा है</string>
+
+    <string name="zero_search_title">शहर नहीं मिला</string>
+    <string name="zero_search_desc">इस नाम का कोई शहर नहीं मिला। कृपया पुनः खोजें</string>
+    <string name="zero_search_reset">खोज रीसेट करें</string>
+    <string name="zero_search_manual">जीपीएस का उपयोग करें</string>
+
+    <string name="permission_denied_title">अनुमतियाँ आवश्यक हैं</string>
+    <string name="permission_denied_desc">नमाज़ समय के लिए स्थान और अज़ान के लिए नोटिफिकेशन अनुमति आवश्यक है</string>
+    <string name="permission_denied_cta">सेटिंग्स खोलें</string>
+
+    <string name="draft_preserved_notice">आपकी सेटिंग्स सुरक्षित रूप से सहेज ली गई हैं</string>
+    <string name="validation_offset_error">समय समायोजन -30 से +30 मिनट के बीच होना चाहिए</string>
+    <string name="success_saved_title">सफलतापूर्वक सहेजा गया!</string>
+    <string name="success_saved_desc">नमाज़ और अज़ान सेटिंग्स अपडेट कर दी गई हैं</string>
+
+    <string name="language_selection">भाषा चुनें</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

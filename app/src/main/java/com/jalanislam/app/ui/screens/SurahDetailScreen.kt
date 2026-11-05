@@ -43,7 +43,8 @@ fun SurahDetailScreen(
     surah: SurahInfo,
     quranRepo: QuranRepository,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    currentLanguage: String = "id"
 ) {
     val context = LocalContext.current
     val audioPlayer = remember { QuranAudioPlayer(context) }
@@ -53,8 +54,11 @@ fun SurahDetailScreen(
     var hideTextInHafalan by remember { mutableStateOf(false) }
     var arabicFontSizeSp by remember { mutableFloatStateOf(26f) }
 
-    val rawAyahs = remember(surah.number) { quranRepo.getAyahsForSurah(surah.number) }
+    val rawAyahs = remember(surah.number, currentLanguage) { quranRepo.getAyahsForSurah(surah.number, currentLanguage) }
     var ayahs by remember { mutableStateOf(rawAyahs) }
+    LaunchedEffect(rawAyahs) {
+        ayahs = rawAyahs
+    }
     val progress by quranRepo.progressFlow.collectAsState()
 
     val currentPlayingAyah by audioPlayer.currentAyahNumber.collectAsState()

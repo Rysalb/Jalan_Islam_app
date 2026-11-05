@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">জালান ইসলাম</string>
+    <string name="tagline">নামাজের সময়সূচী, কিবলা দিক ও আজান অ্যালার্ম</string>
+
+    <string name="nav_home">হোম</string>
+    <string name="nav_quran">কুরআন</string>
+    <string name="nav_monthly">৩০ দিন</string>
+    <string name="nav_qibla">কিবলা</string>
+    <string name="nav_settings">সেটিংস</string>
+
+    <string name="prayer_imsak">ইমসাক</string>
+    <string name="prayer_fajr">ফজর</string>
+    <string name="prayer_sunrise">সূর্যোদয়</string>
+    <string name="prayer_dhuhr">যোহর</string>
+    <string name="prayer_asr">আসর</string>
+    <string name="prayer_maghrib">মাগরিব</string>
+    <string name="prayer_isha">ইশা</string>
+
+    <string name="next_prayer">পরবর্তী নামাজ</string>
+    <string name="time_remaining">বাকি সময়</string>
+    <string name="imsak_fasting_reminder">ইমসাকের সময়: রোজা রাখার প্রস্তুতি নিন</string>
+    <string name="today_schedule">আজকের নামাজের সময়সূচী</string>
+
+    <string name="qibla_direction">কিবলার দিক</string>
+    <string name="distance_to_kabah">কাবা শরিফের দূরত্ব</string>
+    <string name="qibla_bearing">কিবলা কোণ</string>
+    <string name="heading_now">বর্তমান দিক</string>
+    <string name="accuracy_high">সেন্সর নির্ভুলতা: উচ্চ</string>
+    <string name="accuracy_medium">সেন্সর নির্ভুলতা: মাঝারি</string>
+    <string name="accuracy_low">সেন্সর নির্ভুলতা: কম (ক্যালিব্রেশন প্রয়োজন)</string>
+    <string name="calibrate_compass_hint">কম্পাস ক্যালিব্রেট করতে ফোনটি ৮ আকৃতিতে ঘোরান</string>
+
+    <string name="manual_adjustment_title">ম্যানুয়াল মিনিট সমন্বয়</string>
+    <string name="manual_adjustment_desc">স্থানীয় মসজিদের সাথে সমন্বয় করতে মিনিট পরিবর্তন করুন (+/- ১০ মিনিট)</string>
+    <string name="minute_unit">মিনিট</string>
+    <string name="reset_default">ডিফল্টে রিসেট করুন</string>
+    <string name="save_changes">সংরক্ষণ করুন</string>
+
+    <string name="adzan_alarm">আজান অ্যালার্ম</string>
+    <string name="adzan_full">পূর্ণ আজান</string>
+    <string name="adzan_beep">সংক্ষিপ্ত বিপ</string>
+    <string name="adzan_mute">নীরব / ভাইব্রেট</string>
+    <string name="stop_adzan">আজান বন্ধ করুন</string>
+    <string name="it_is_prayer_time">%s নামাজের সময় হয়েছে</string>
+    <string name="prayer_time_body">%2$s এবং আশেপাশের এলাকার জন্য %1$s নামাজের সময় হয়েছে</string>
+
+    <string name="current_location">বর্তমান অবস্থান</string>
+    <string name="use_gps">স্বয়ংক্রিয় জিপিএস</string>
+    <string name="select_city">শহর নির্বাচন করুন</string>
+    <string name="search_city_hint">শহরের নাম অনুসন্ধান করুন...</string>
+
+    <!-- 10 Core UI States -->
+    <string name="empty_state_title">কোন অবস্থান নির্বাচিত হয়নি</string>
+    <string name="empty_state_desc">নামাজের সময় এবং কিবলার দিক নির্ধারণ করতে অনুগ্রহ করে জিপিএস চালু করুন বা শহর নির্বাচন করুন।</string>
+    <string name="empty_state_cta">এখনই শহর নির্বাচন করুন</string>
+
+    <string name="loading_state_title">নামাজের সময় হিসাব করা হচ্ছে...</string>
+    <string name="loading_state_desc">আপনার এলাকার স্থানাঙ্ক এবং কিবলা কোণ গণনা করা হচ্ছে।</string>
+
+    <string name="error_state_title">অবস্থান পেতে ব্যর্থ হয়েছে</string>
+    <string name="error_state_desc">ডিভাইসের অবস্থান পাওয়া যায়নি। জিপিএস চালু আছে কিনা পরীক্ষা করুন বা ম্যানুয়ালি শহর নির্বাচন করুন।</string>
+    <string name="error_state_retry">আবার চেষ্টা করুন</string>
+
+    <string name="offline_state_banner">অফলাইন মোড সক্রিয় — ইন্টারনেট ছাড়াই ডিভাইসে গণনা করা হচ্ছে।</string>
+    <string name="slow_network_banner">ধীর নেটওয়ার্ক সংযোগ। সময়সূচী সঠিক রাখতে স্থানীয় গণনা ব্যবহৃত হচ্ছে।</string>
+
+    <string name="zero_search_title">কোন শহর পাওয়া যায়নি</string>
+    <string name="zero_search_desc">আপনার অনুসন্ধানের সাথে কোন শহর মিলেনি। অন্য নাম চেষ্টা করুন।</string>
+    <string name="zero_search_reset">অনুসন্ধান রিসেট করুন</string>
+    <string name="zero_search_manual">জিপিএস অবস্থান ব্যবহার করুন</string>
+
+    <string name="permission_denied_title">অনুমতি প্রয়োজন</string>
+    <string name="permission_denied_desc">সময়মতো আজান দিতে এবং কিবলা নির্দেশ করতে অবস্থান ও বিজ্ঞপ্তি অনুমতি প্রয়োজন।</string>
+    <string name="permission_denied_cta">অ্যাপ সেটিংস খুলুন</string>
+
+    <string name="draft_preserved_notice">আপনার সেটিংস স্বয়ংক্রিয়ভাবে ডিভাইসে সংরক্ষিত হয়েছে।</string>
+    <string name="validation_offset_error">মিনিট সমন্বয় অবশ্যই -১০ থেকে +১০ মিনিটের মধ্যে হতে হবে</string>
+    <string name="success_saved_title">সফলভাবে সংরক্ষিত হয়েছে!</string>
+    <string name="success_saved_desc">আপনার নামাজের সেটিংস এবং আজান পছন্দ আপডেট হয়েছে।</string>
+
+    <string name="language_selection">ভাষা নির্বাচন</string>
+    <string name="lang_id">Bahasa Indonesia</string>
+    <string name="lang_ms">Bahasa Melayu</string>
+    <string name="lang_en">English</string>
+    <string name="lang_ar">العربية (Arabic)</string>
+    <string name="lang_th">ภาษาไทย (Thai)</string>
+    <string name="lang_ja">日本語 (Japanese)</string>
+    <string name="lang_hi">हिन्दी (Hindi)</string>
+    <string name="lang_bn">বাংলা (Bengali)</string>
+    <string name="lang_ur">اردو (Urdu)</string>
+    <string name="lang_zh">中文 (Chinese)</string>
+    <string name="lang_tr">Türkçe (Turkish)</string>
+    <string name="lang_fr">Français</string>
+    <string name="lang_de">Deutsch</string>
+</resources>
+

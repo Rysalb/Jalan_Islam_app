@@ -78,6 +78,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        handleScreenWakeup(intent)
 
         try {
             // Only auto-trigger permissions if user has already completed onboarding
@@ -169,6 +170,32 @@ class MainActivity : ComponentActivity() {
             viewModel.scanCurrentLocation()
         } else if (!hasLocation) {
             requestAppPermissions()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleScreenWakeup(intent)
+    }
+
+    private fun handleScreenWakeup(incomingIntent: Intent?) {
+        val fromAlarm = incomingIntent?.getBooleanExtra(
+            com.jalanislam.app.alarm.AdzanPlaybackService.EXTRA_FROM_ALARM, false
+        ) ?: false
+
+        if (fromAlarm || com.jalanislam.app.alarm.AdzanPlaybackState.isPlaying.value) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                setShowWhenLocked(true)
+                setTurnScreenOn(true)
+            } else {
+                @Suppress("DEPRECATION")
+                window.addFlags(
+                    android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                    android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                )
+            }
         }
     }
 

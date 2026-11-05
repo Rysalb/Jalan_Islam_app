@@ -18,7 +18,11 @@ class JalanIslamApplication : Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            // Channel for Adzan playback
+            // Channel for Adzan playback (v2 ensures fresh lockscreen visibility & high priority on API 34 / HyperOS)
+            try {
+                notificationManager.deleteNotificationChannel("jalan_islam_adzan_channel")
+            } catch (ignored: Exception) {}
+
             val adzanChannel = NotificationChannel(
                 CHANNEL_ADZAN_ID,
                 "Alarm Adzan & Waktu Sholat",
@@ -27,7 +31,10 @@ class JalanIslamApplication : Application() {
                 description = "Notifikasi dan suara adzan ketika waktu sholat tiba"
                 enableVibration(true)
                 vibrationPattern = longArrayOf(0, 500, 200, 500)
-                setSound(null, null) // Audio is actively managed by ForegroundService
+                lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+                enableLights(true)
+                lightColor = android.graphics.Color.GREEN
+                setSound(null, null) // Audio is actively managed by ForegroundService with USAGE_ALARM
             }
 
             // Channel for generic updates / reminders
@@ -45,7 +52,7 @@ class JalanIslamApplication : Application() {
     }
 
     companion object {
-        const val CHANNEL_ADZAN_ID = "jalan_islam_adzan_channel"
+        const val CHANNEL_ADZAN_ID = "jalan_islam_adzan_channel_v2"
         const val CHANNEL_INFO_ID = "jalan_islam_info_channel"
     }
 }

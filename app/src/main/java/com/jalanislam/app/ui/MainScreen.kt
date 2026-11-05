@@ -29,10 +29,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jalanislam.app.R
+import com.jalanislam.app.alarm.AdzanPlaybackState
 import com.jalanislam.app.data.adzan.AdzanSoundManager
 import com.jalanislam.app.data.cities.IndonesianCities
 import com.jalanislam.app.data.model.PrayerName
 import com.jalanislam.app.data.quran.SurahInfo
+import com.jalanislam.app.ui.components.AdzanActiveRingingDialog
 import com.jalanislam.app.ui.components.AdzanPlaylistDialog
 import com.jalanislam.app.ui.components.PrayerAdjustmentDialog
 import com.jalanislam.app.ui.screens.HomeScreen
@@ -69,6 +71,20 @@ fun MainScreen(
     var customAudioList by remember { mutableStateOf<List<com.jalanislam.app.data.adzan.AdzanSoundItem>>(emptyList()) }
     var filePickerSuccessMessage by remember { mutableStateOf<String?>(null) }
     var filePickerErrorMessage by remember { mutableStateOf<String?>(null) }
+
+    // Adzan Playback & In-App Ringing Dialog States
+    val isAdzanPlaying by AdzanPlaybackState.isPlaying.collectAsState()
+    val activeRingingPrayer by AdzanPlaybackState.activePrayer.collectAsState()
+    val activeRingingLocation by AdzanPlaybackState.activeLocation.collectAsState()
+    val activeRingingSoundTitle by AdzanPlaybackState.activeSoundTitle.collectAsState()
+    val isRingingTest by AdzanPlaybackState.isTest.collectAsState()
+    var showAdzanRingingDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isAdzanPlaying) {
+        if (isAdzanPlaying) {
+            showAdzanRingingDialog = true
+        }
+    }
 
     // Lazy load custom audio list only when dialog opens (zero startup disk I/O overhead)
     LaunchedEffect(selectedPrayerForAdzanPlaylist) {
@@ -273,6 +289,23 @@ fun MainScreen(
         if (uiState.showFeatureTour) {
             com.jalanislam.app.ui.components.InteractiveFeatureTourDialog(
                 onDismiss = { viewModel.finishFeatureTour() }
+            )
+        }
+
+        // In-App Large Modal Dialog to View Adzan & Stop Audio in 1-Click
+        if (showAdzanRingingDialog) {
+            AdzanActiveRingingDialog(
+                activePrayer = activeRingingPrayer,
+                locationName = activeRingingLocation,
+                soundTitle = activeRingingSoundTitle,
+                isTest = isRingingTest,
+                onStopAdzan = {
+                    AdzanPlaybackState.stopAdzan(context)
+                },
+                onDismiss = {
+                    showAdzanRingingDialog = false
+                    AdzanPlaybackState.stopAdzan(context)
+                }
             )
         }
     }

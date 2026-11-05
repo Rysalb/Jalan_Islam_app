@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.RingtoneManager
@@ -12,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
+import androidx.core.app.ServiceCompat
 import com.jalanislam.app.JalanIslamApplication
 import com.jalanislam.app.MainActivity
 import com.jalanislam.app.R
@@ -34,23 +36,35 @@ class AdzanPlaybackService : Service() {
 
         val prayerNameStr = intent?.getStringExtra(PrayerAlarmScheduler.EXTRA_PRAYER_NAME)
         val locationName = intent?.getStringExtra(PrayerAlarmScheduler.EXTRA_LOCATION_NAME) ?: "Indonesia"
+        val isTest = intent?.getBooleanExtra(PrayerAlarmScheduler.EXTRA_IS_TEST, false) ?: false
         val prayerName = PrayerName.fromString(prayerNameStr)
 
         acquireWakeLock()
-        startForegroundNotification(prayerName, locationName)
-        startAudioPlayback(prayerName)
+        startForegroundNotification(prayerName, locationName, isTest)
+        startAudioPlayback(prayerName, locationName, isTest)
 
         return START_NOT_STICKY
     }
 
-    private fun startForegroundNotification(prayerName: PrayerName, locationName: String) {
+    private fun startForegroundNotification(prayerName: PrayerName, locationName: String, isTest: Boolean) {
         val prayerTitle = getString(prayerName.titleRes)
-        val title = getString(R.string.it_is_prayer_time, prayerTitle)
-        val body = getString(R.string.prayer_time_body, prayerTitle, locationName)
+        val title = if (isTest) {
+            "Uji Coba Alarm Adzan: $prayerTitle"
+        } else {
+            getString(R.string.it_is_prayer_time, prayerTitle)
+        }
+        val body = if (isTest) {
+            "Tes alarm dan notifikasi adzan ($locationName). Ketuk untuk buka modal penghenti di aplikasi."
+        } else {
+            getString(R.string.prayer_time_body, prayerTitle, locationName)
+        }
 
         // Intent to open app
         val openAppIntent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(EXTRA_FROM_ALARM, true)
         }
         val openPendingIntent = PendingIntent.getActivity(
             this,
@@ -71,21 +85,32 @@ class AdzanPlaybackService : Service() {
         )
 
         val notification: Notification = NotificationCompat.Builder(this, JalanIslamApplication.CHANNEL_ADZAN_ID)
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(body)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setFullScreenIntent(openPendingIntent, true) // Required to wake screen and pop up on lock screen
             .setAutoCancel(false)
             .setOngoing(true)
             .setContentIntent(openPendingIntent)
             .addAction(android.R.drawable.ic_media_pause, getString(R.string.stop_adzan), stopPendingIntent)
             .build()
 
-        startForeground(NOTIFICATION_ID, notification)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ServiceCompat.startForeground(
+                this,
+                NOTIFICATION_ID,
+                notification,
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+            )
+        } else {
+            startForeground(NOTIFICATION_ID, notification)
+        }
     }
 
-    private fun startAudioPlayback(prayerName: PrayerName) {
+    private fun startAudioPlayback(prayerName: PrayerName, locationName: String, isTest: Boolean) {
         stopMediaPlayer()
 
         try {
@@ -114,6 +139,9 @@ class AdzanPlaybackService : Service() {
             // 3. Final safety fallback to system notification/alarm
             val finalUri = audioUri ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
             ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+            val soundTitle = chosenSound?.title ?: if (prayerName == PrayerName.FAJR) "Adzan Subuh" else "Adzan Standar"
+            AdzanPlaybackState.updatePlaybackStarted(prayerName, locationName, soundTitle, isTest)
 
             if (finalUri != null) {
                 mediaPlayer = MediaPlayer().apply {
@@ -193,6 +221,7 @@ class AdzanPlaybackService : Service() {
     }
 
     private fun stopPlaybackAndService() {
+        AdzanPlaybackState.updatePlaybackStopped()
         stopMediaPlayer()
         releaseWakeLock()
         stopForeground(STOP_FOREGROUND_REMOVE)
@@ -207,7 +236,7 @@ class AdzanPlaybackService : Service() {
     companion object {
         const val ACTION_PLAY = "com.jalanislam.app.ACTION_PLAY_ADZAN"
         const val ACTION_STOP = "com.jalanislam.app.ACTION_STOP_ADZAN"
+        const val EXTRA_FROM_ALARM = "extra_from_alarm"
         private const val NOTIFICATION_ID = 1001
     }
 }
-

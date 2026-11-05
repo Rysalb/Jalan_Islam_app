@@ -15,6 +15,7 @@ object PrayerAlarmScheduler {
 
     const val EXTRA_PRAYER_NAME = "extra_prayer_name"
     const val EXTRA_LOCATION_NAME = "extra_location_name"
+    const val EXTRA_IS_TEST = "extra_is_test"
 
     fun scheduleNextAlarm(context: Context) {
         try {
@@ -81,15 +82,25 @@ object PrayerAlarmScheduler {
 
             val triggerTime = nextItem.timeMillis
 
+            val showActivityIntent = Intent(context, com.jalanislam.app.MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val showPendingIntent = PendingIntent.getActivity(
+                context,
+                100 + nextItem.name.ordinal,
+                showActivityIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 if (alarmManager.canScheduleExactAlarms()) {
-                    val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                    val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, showPendingIntent)
                     alarmManager.setAlarmClock(clockInfo, pendingIntent)
                 } else {
                     alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
                 }
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, showPendingIntent)
                 alarmManager.setAlarmClock(clockInfo, pendingIntent)
             } else {
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
@@ -115,6 +126,7 @@ object PrayerAlarmScheduler {
                 action = AdzanPlaybackService.ACTION_PLAY
                 putExtra(EXTRA_PRAYER_NAME, PrayerName.DHUHR.name)
                 putExtra(EXTRA_LOCATION_NAME, city.name)
+                putExtra(EXTRA_IS_TEST, true)
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(serviceIntent)
@@ -127,6 +139,7 @@ object PrayerAlarmScheduler {
             val intent = Intent(context, PrayerAlarmReceiver::class.java).apply {
                 putExtra(EXTRA_PRAYER_NAME, PrayerName.DHUHR.name)
                 putExtra(EXTRA_LOCATION_NAME, city.name)
+                putExtra(EXTRA_IS_TEST, true)
             }
             val pendingIntent = PendingIntent.getBroadcast(
                 context,
@@ -134,16 +147,25 @@ object PrayerAlarmScheduler {
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
+            val showActivityIntent = Intent(context, com.jalanislam.app.MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val showPendingIntent = PendingIntent.getActivity(
+                context,
+                9998,
+                showActivityIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     if (alarmManager.canScheduleExactAlarms()) {
-                        val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                        val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, showPendingIntent)
                         alarmManager.setAlarmClock(clockInfo, pendingIntent)
                     } else {
                         alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
                     }
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, pendingIntent)
+                    val clockInfo = AlarmManager.AlarmClockInfo(triggerTime, showPendingIntent)
                     alarmManager.setAlarmClock(clockInfo, pendingIntent)
                 } else {
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTime, pendingIntent)
@@ -162,10 +184,7 @@ object PrayerAlarmScheduler {
      * Stop currently playing test adzan playback.
      */
     fun stopTestNotification(context: Context) {
-        val intent = Intent(context, AdzanPlaybackService::class.java).apply {
-            action = AdzanPlaybackService.ACTION_STOP
-        }
-        context.startService(intent)
+        AdzanPlaybackState.stopAdzan(context)
     }
 
     fun cancelAllAlarms(context: Context) {

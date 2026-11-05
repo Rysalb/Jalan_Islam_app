@@ -41,6 +41,7 @@ import com.jalanislam.app.ui.components.ZeroSearchResultsView
 import com.jalanislam.app.ui.theme.AppColorPalette
 import com.jalanislam.app.ui.theme.AppThemeMode
 import com.jalanislam.app.ui.theme.IslamicGold
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
 
 @Composable
 fun SettingsScreen(
@@ -73,7 +74,7 @@ fun SettingsScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(getThemedTopBarColor())
                     .statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
@@ -387,12 +388,25 @@ fun SettingsScreen(
                                     Text(
                                         text = mode.title,
                                         fontSize = 11.sp,
-                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
                                     )
                                 },
                                 leadingIcon = if (isSelected) {
                                     { Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(14.dp)) }
-                                } else null
+                                } else null,
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+                                    selectedLabelColor = MaterialTheme.colorScheme.primary,
+                                    selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                                    labelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
+                                ),
+                                border = FilterChipDefaults.filterChipBorder(
+                                    enabled = true,
+                                    selected = isSelected,
+                                    borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.25f),
+                                    selectedBorderColor = MaterialTheme.colorScheme.primary
+                                )
                             )
                         }
                     }

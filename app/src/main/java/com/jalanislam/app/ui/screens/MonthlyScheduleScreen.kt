@@ -24,6 +24,7 @@ import com.jalanislam.app.data.model.DailyPrayerSchedule
 import com.jalanislam.app.ui.components.EmptyStateView
 import com.jalanislam.app.ui.components.ZeroSearchResultsView
 import com.jalanislam.app.ui.theme.IslamicGold
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
 
 @Composable
 fun MonthlyScheduleScreen(
@@ -50,7 +51,7 @@ fun MonthlyScheduleScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(getThemedTopBarColor())
                     .statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 14.dp)
             ) {
@@ -95,10 +96,14 @@ fun MonthlyScheduleScreen(
                     },
                     singleLine = true,
                     colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedTextColor = Color.Black,
-                        unfocusedTextColor = Color.Black
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                     ),
                     shape = RoundedCornerShape(12.dp),
                     modifier = Modifier.fillMaxWidth()

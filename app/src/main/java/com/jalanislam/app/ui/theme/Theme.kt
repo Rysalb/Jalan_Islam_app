@@ -9,6 +9,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
@@ -132,6 +133,16 @@ fun getAppColorScheme(paletteId: String, isDark: Boolean): ColorScheme {
     }
 }
 
+/**
+ * Returns deep themed dark surface for TopBar in Dark Mode to eliminate glare,
+ * and saturated brand primary color in Light Mode.
+ */
+@Composable
+fun getThemedTopBarColor(): Color {
+    val isDark = MaterialTheme.colorScheme.surface.luminance() < 0.5f
+    return if (isDark) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.primary
+}
+
 @Composable
 fun JalanIslamTheme(
     paletteId: String = "emerald",
@@ -151,7 +162,8 @@ fun JalanIslamTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
+            val topBarBg = if (isDark) colorScheme.surface else colorScheme.primary
+            window.statusBarColor = topBarBg.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !isDark
         }
     }

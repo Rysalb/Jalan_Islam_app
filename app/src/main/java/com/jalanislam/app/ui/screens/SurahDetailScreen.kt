@@ -29,6 +29,8 @@ import com.jalanislam.app.data.quran.QuranRepository
 import com.jalanislam.app.data.quran.SurahInfo
 import com.jalanislam.app.ui.components.DraftPreservationNotice
 import com.jalanislam.app.ui.theme.IslamicGold
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import com.jalanislam.app.ui.theme.StateSuccess
 
 enum class QuranStudyMode {
@@ -69,7 +71,7 @@ fun SurahDetailScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(getThemedTopBarColor())
                     .statusBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
@@ -123,21 +125,54 @@ fun SurahDetailScreen(
                 // Mode Selector Tabs: Tadarus vs Hafalan
                 TabRow(
                     selectedTabIndex = studyMode.ordinal,
-                    containerColor = Color.White.copy(alpha = 0.15f),
-                    contentColor = Color.White,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    divider = {},
+                    indicator = { tabPositions ->
+                        TabRowDefaults.SecondaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[studyMode.ordinal]),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    },
                     modifier = Modifier.clip(RoundedCornerShape(12.dp))
                 ) {
                     Tab(
                         selected = studyMode == QuranStudyMode.TADARUS,
                         onClick = { studyMode = QuranStudyMode.TADARUS },
-                        text = { Text("Mode Tadarus", fontWeight = FontWeight.Bold) },
-                        icon = { Icon(Icons.AutoMirrored.Filled.MenuBook, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                        text = {
+                            Text(
+                                "Mode Tadarus",
+                                fontWeight = FontWeight.Bold,
+                                color = if (studyMode == QuranStudyMode.TADARUS) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        },
+                        icon = {
+                            Icon(
+                                Icons.AutoMirrored.Filled.MenuBook,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = if (studyMode == QuranStudyMode.TADARUS) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        }
                     )
                     Tab(
                         selected = studyMode == QuranStudyMode.HAFALAN,
                         onClick = { studyMode = QuranStudyMode.HAFALAN },
-                        text = { Text("Mode Hafalan", fontWeight = FontWeight.Bold) },
-                        icon = { Icon(Icons.Filled.School, contentDescription = null, modifier = Modifier.size(18.dp)) }
+                        text = {
+                            Text(
+                                "Mode Hafalan",
+                                fontWeight = FontWeight.Bold,
+                                color = if (studyMode == QuranStudyMode.HAFALAN) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        },
+                        icon = {
+                            Icon(
+                                Icons.Filled.School,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = if (studyMode == QuranStudyMode.HAFALAN) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                            )
+                        }
                     )
                 }
             }

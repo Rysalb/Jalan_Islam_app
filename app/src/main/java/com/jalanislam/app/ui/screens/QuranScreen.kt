@@ -29,6 +29,8 @@ import com.jalanislam.app.ui.components.SuccessStateFeedback
 import com.jalanislam.app.ui.components.ZeroSearchResultsView
 import com.jalanislam.app.ui.theme.IslamicGold
 import com.jalanislam.app.ui.theme.StateSuccess
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 
 enum class QuranTab(val title: String) {
     SURAHS("Daftar Surah"),
@@ -53,7 +55,7 @@ fun QuranScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(getThemedTopBarColor())
                     .statusBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 12.dp)
             ) {
@@ -105,10 +107,14 @@ fun QuranScreen(
                         },
                         singleLine = true,
                         colors = OutlinedTextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            focusedTextColor = Color.Black,
-                            unfocusedTextColor = Color.Black
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                            focusedBorderColor = MaterialTheme.colorScheme.primary,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                            focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         ),
                         shape = RoundedCornerShape(12.dp),
                         modifier = Modifier.fillMaxWidth()
@@ -119,15 +125,30 @@ fun QuranScreen(
                 // Tab Selector
                 TabRow(
                     selectedTabIndex = selectedTab.ordinal,
-                    containerColor = Color.White.copy(alpha = 0.15f),
-                    contentColor = Color.White,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                    contentColor = MaterialTheme.colorScheme.primary,
+                    divider = {},
+                    indicator = { tabPositions ->
+                        TabRowDefaults.SecondaryIndicator(
+                            modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTab.ordinal]),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    },
                     modifier = Modifier.clip(RoundedCornerShape(12.dp))
                 ) {
                     QuranTab.entries.forEach { tab ->
+                        val isSelected = selectedTab == tab
                         Tab(
-                            selected = selectedTab == tab,
+                            selected = isSelected,
                             onClick = { selectedTab = tab },
-                            text = { Text(tab.title, fontWeight = FontWeight.Bold, fontSize = 12.sp) }
+                            text = {
+                                Text(
+                                    text = tab.title,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                    fontSize = 12.sp,
+                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                                )
+                            }
                         )
                     }
                 }

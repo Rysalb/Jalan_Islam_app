@@ -27,6 +27,7 @@ import com.jalanislam.app.data.model.QiblaInfo
 import com.jalanislam.app.ui.components.CompassWidget
 import com.jalanislam.app.ui.theme.IslamicGold
 import com.jalanislam.app.ui.theme.StateWarning
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
 
 @Composable
 fun QiblaScreen(
@@ -39,7 +40,7 @@ fun QiblaScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(getThemedTopBarColor())
                     .statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
             ) {

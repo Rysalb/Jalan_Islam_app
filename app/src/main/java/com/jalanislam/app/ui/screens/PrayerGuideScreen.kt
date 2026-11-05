@@ -26,6 +26,7 @@ import com.jalanislam.app.data.guide.PrayerGuideRepository
 import com.jalanislam.app.ui.components.ZeroSearchResultsView
 import com.jalanislam.app.ui.theme.IslamicGold
 import com.jalanislam.app.ui.theme.IslamicGoldLight
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,7 +84,7 @@ fun PrayerGuideScreen(
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = getThemedTopBarColor()
                 )
             )
         }
@@ -109,6 +110,16 @@ fun PrayerGuideScreen(
                         }
                     }
                 },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surface,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                    focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                ),
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp)
             )

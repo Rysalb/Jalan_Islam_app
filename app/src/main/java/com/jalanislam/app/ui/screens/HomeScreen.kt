@@ -32,6 +32,7 @@ import com.jalanislam.app.data.preferences.NotificationMode
 import com.jalanislam.app.data.quran.QuranReadingProgress
 import com.jalanislam.app.ui.components.*
 import com.jalanislam.app.ui.theme.IslamicGold
+import com.jalanislam.app.ui.theme.getThemedTopBarColor
 import kotlinx.coroutines.delay
 
 @Composable
@@ -81,7 +82,7 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.primary)
+                    .background(getThemedTopBarColor())
                     .statusBarsPadding()
                     .padding(horizontal = 16.dp, vertical = 14.dp)
             ) {

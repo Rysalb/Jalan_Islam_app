@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -189,6 +191,7 @@ fun QuranScreen(
                     items(surahs) { surah ->
                         SurahItemCard(
                             surah = surah,
+                            quranRepo = quranRepo,
                             onClick = { onSelectSurah(surah) }
                         )
                     }
@@ -276,8 +279,13 @@ fun LastReadCard(
 @Composable
 private fun SurahItemCard(
     surah: SurahInfo,
+    quranRepo: QuranRepository,
     onClick: () -> Unit
 ) {
+    val readCount = remember(surah.number) { quranRepo.getSurahReadCount(surah.number) }
+    val readPct = remember(readCount, surah.totalVerses) { quranRepo.getSurahReadPercentage(surah.number) }
+    val isKhatam = readCount >= surah.totalVerses
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -285,49 +293,96 @@ private fun SurahItemCard(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(14.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // Surah Number Diamond/Circle
-            Box(
-                modifier = Modifier
-                    .size(36.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-                contentAlignment = Alignment.Center
+        Column(modifier = Modifier.padding(14.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                // Surah Number Diamond/Circle
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(
+                            if (isKhatam) StateSuccess.copy(alpha = 0.15f)
+                            else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "${surah.number}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = if (isKhatam) StateSuccess else MaterialTheme.colorScheme.primary
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(14.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = surah.nameLatin,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        if (isKhatam) {
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = StateSuccess.copy(alpha = 0.15f)
+                            ) {
+                                Text(
+                                    text = "Khatam",
+                                    fontSize = 9.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = StateSuccess,
+                                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp)
+                                )
+                            }
+                        }
+                    }
+                    Text(
+                        text = "${surah.revelationType} • ${surah.totalVerses} Ayat",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
+                }
+
                 Text(
-                    text = "${surah.number}",
-                    style = MaterialTheme.typography.bodyMedium,
+                    text = surah.nameArabic,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
             }
 
-            Spacer(modifier = Modifier.width(14.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = surah.nameLatin,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = "${surah.revelationType} • ${surah.totalVerses} Ayat",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                )
+            // Progress bar if partially read
+            if (readCount > 0 && !isKhatam) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    LinearProgressIndicator(
+                        progress = { readPct / 100f },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(4.dp)
+                            .clip(RoundedCornerShape(2.dp)),
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "$readCount/${surah.totalVerses} (${readPct.toInt()}%)",
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
-
-            Text(
-                text = surah.nameArabic,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
         }
     }
 }
@@ -452,8 +507,66 @@ private fun KhatamTargetTab(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(16.dp)
     ) {
+        // Overall Khatam Stats Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        ) {
+            Column(modifier = Modifier.padding(18.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Total Progres Khatam Al-Qur'an",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = IslamicGold
+                    )
+                    Text(
+                        text = "${progress.totalRead} / 6.236 Ayat",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                LinearProgressIndicator(
+                    progress = { progress.khatamPercentage / 100f },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                        .clip(RoundedCornerShape(5.dp)),
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Pencapaian: ${String.format(java.util.Locale.US, "%.1f", progress.khatamPercentage)}% Khatam",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+                    Text(
+                        text = "Hari ini: ${progress.todayReadCount} / ${progress.dailyVerseTarget} Ayat",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = if (progress.todayReadCount >= progress.dailyVerseTarget) StateSuccess else IslamicGold
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -472,7 +585,58 @@ private fun KhatamTargetTab(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Quick selection chips
+                Text(
+                    text = "Pilihan Cepat Target:",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+
+                val quickDays = listOf(
+                    30 to "30 Hari (Ramadhan)",
+                    60 to "60 Hari (2 Bln)",
+                    90 to "90 Hari (3 Bln)",
+                    180 to "180 Hari (6 Bln)",
+                    365 to "365 Hari (1 Thn)"
+                )
+
+                Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    quickDays.chunked(2).forEach { rowList ->
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            rowList.forEach { (days, label) ->
+                                val isSelected = targetDaysInput == "$days"
+                                OutlinedButton(
+                                    onClick = {
+                                        targetDaysInput = "$days"
+                                        validationError = null
+                                        quranRepo.setKhatamTargetDays(days)
+                                        showSuccess = true
+                                    },
+                                    modifier = Modifier.weight(1f),
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = if (isSelected) ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
+                                    else ButtonDefaults.outlinedButtonColors()
+                                ) {
+                                    Text(
+                                        text = label,
+                                        fontSize = 11.sp,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
 
                 OutlinedTextField(
                     value = targetDaysInput,
@@ -485,7 +649,7 @@ private fun KhatamTargetTab(
                             validationError = null
                         }
                     },
-                    label = { Text("Target Hari Khatam") },
+                    label = { Text("Atau Isi Target Hari Kustom") },
                     suffix = { Text("Hari") },
                     singleLine = true,
                     isError = validationError != null,
@@ -520,7 +684,7 @@ private fun KhatamTargetTab(
         if (showSuccess) {
             SuccessStateFeedback(
                 title = "Target Berhasil Diperbarui!",
-                description = "Komitmen harian Anda telah disesuaikan.",
+                description = "Komitmen harian Anda telah disesuaikan menjadi ${progress.targetKhatamDays} hari.",
                 nextActionLabel = "Tutup",
                 onNextAction = { showSuccess = false }
             )

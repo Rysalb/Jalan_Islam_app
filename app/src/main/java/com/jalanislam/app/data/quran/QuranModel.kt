@@ -18,6 +18,7 @@ data class AyahItem(
     val textTranslation: String,
     val audioUrl: String,
     val isMemorized: Boolean = false,
+    val isRead: Boolean = false,
     val isRevealed: Boolean = true // For Tahfidz mode (Hide / Reveal)
 )
 
@@ -27,12 +28,16 @@ data class QuranReadingProgress(
     val lastReadAyahNumber: Int = 1,
     val lastReadTimestamp: Long = System.currentTimeMillis(),
     val targetKhatamDays: Int = 30,
-    val memorizedAyahKeys: Set<String> = emptySet() // "surah:ayah"
+    val memorizedAyahKeys: Set<String> = emptySet(), // "surah:ayah"
+    val readAyahKeys: Set<String> = emptySet(), // "surah:ayah"
+    val todayReadCount: Int = 0,
+    val todayDateString: String = ""
 ) {
     val totalMemorized: Int get() = memorizedAyahKeys.size
+    val totalRead: Int get() = readAyahKeys.size
+    val khatamPercentage: Float get() = (readAyahKeys.size.toFloat() / 6236f * 100f).coerceIn(0f, 100f)
 
-    // Estimated progress calculation (out of 604 pages or total verses)
+    // Daily verse target according to user's khatam commitment (e.g. 30 days = ~208 verses/day)
     val dailyVerseTarget: Int
-        get() = (6236.0 / targetKhatamDays.coerceAtLeast(1)).toInt().coerceAtLeast(1)
+        get() = (6236.0 / targetKhatamDays.coerceIn(1, 365)).toInt().coerceAtLeast(1)
 }
-

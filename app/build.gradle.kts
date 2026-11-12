@@ -1,7 +1,33 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
+
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystorePropertiesFile.exists()) {
+        keystorePropertiesFile.bufferedReader(Charsets.UTF_8).use { reader ->
+            load(reader)
+        }
+    }
+}
+
+val releaseStorePath: String? = (keystoreProperties.getProperty("storeFile")
+    ?: keystoreProperties.getProperty("\uFEFFstoreFile")
+    ?: System.getenv("KEYSTORE_FILE"))?.trim()
+val releaseStorePassword: String? = (keystoreProperties.getProperty("storePassword")
+    ?: System.getenv("KEYSTORE_PASSWORD"))?.trim()
+val releaseKeyAlias: String? = (keystoreProperties.getProperty("keyAlias")
+    ?: System.getenv("KEY_ALIAS"))?.trim()
+val releaseKeyPassword: String? = (keystoreProperties.getProperty("keyPassword")
+    ?: System.getenv("KEY_PASSWORD"))?.trim()
+val hasReleaseSigning = !releaseStorePath.isNullOrBlank() &&
+    rootProject.file(releaseStorePath).exists() &&
+    !releaseStorePassword.isNullOrBlank() &&
+    !releaseKeyAlias.isNullOrBlank() &&
+    !releaseKeyPassword.isNullOrBlank()
 
 android {
     namespace = "com.jalanislam.app"
@@ -20,6 +46,17 @@ android {
         }
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = rootProject.file(releaseStorePath!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -27,7 +64,19 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
+    }
+
+    applicationVariants.all {
+        val variant = this
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                output.outputFileName = "JalanIslam-v${variant.versionName}-${variant.buildType.name}.apk"
+            }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -55,6 +104,7 @@ dependencies {
     androidTestImplementation(composeBom)
 
     implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
